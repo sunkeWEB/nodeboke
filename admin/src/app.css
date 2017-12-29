@@ -1,0 +1,43 @@
+@media screen and (max-width: 2000px) {
+    .loginBtn{
+        width: 100%;
+    }
+}
+.loginimg{
+    width: 80px;
+    border-radius:50%;
+}
+
+#components-layout-demo-custom-trigger .trigger {
+    font-size: 18px;
+    line-height: 64px;
+    padding: 0 24px;
+    cursor: pointer;
+    transition: color .3s;
+}
+
+#components-layout-demo-custom-trigger .trigger:hover {
+    color: #1890ff;
+}
+
+#components-layout-demo-custom-trigger .logo {
+    height: 32px;
+    background: rgba(255,255,255,.2);
+    margin: 16px;
+}
+.ant-layout{
+    height: 100%;
+}
+
+.ant-layout-sider-children .logo{
+    height: 60px;
+    background-image: url("./component/login/logo.jpg");
+    background-size: 50px 50px;
+    background-repeat:no-repeat;
+    background-position:15px;
+}
+.trigger{
+    padding-left: 16px;
+    font-size: 20px;
+    line-height: 64px;
+}
