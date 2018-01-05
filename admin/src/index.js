@@ -18,11 +18,11 @@ const store = createStore(reducer, compose(
 ReactDOM.render((
     <Provider store={store}>
         <BrowserRouter>
-            <div style={{height:"100%"}}>
+            <div style={{height: "100%"}}>
                 <AuthRoute/>
                 <Switch>
                     <Route path="/login" component={Login}/>
-                    <Route path="/app" component={App}/>
+                    <App/>
                 </Switch>
             </div>
         </BrowserRouter>

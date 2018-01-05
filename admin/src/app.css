@@ -41,3 +41,18 @@
     font-size: 20px;
     line-height: 64px;
 }
+.marginBottom{
+    margin-bottom: 10px;
+}
+
+@media screen and (max-width: 1200px) {
+    .updatepwdbtn{
+        width: 100%;
+    }
+}
+th,td{
+    white-space:nowrap;
+}
+.ql-picker-label::before{
+    position: absolute;
+}

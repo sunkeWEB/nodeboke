@@ -1,21 +1,27 @@
 import React, {Component} from 'react';
-import {Layout, Menu, Icon, Popconfirm, message} from 'antd';
-import {withRouter,Redirect} from 'react-router-dom';
+import {Layout, Menu, Icon, Popconfirm} from 'antd';
+import {withRouter, Redirect, Route, Switch} from 'react-router-dom';
 import {connect} from 'react-redux';
 import browserCookies from 'browser-cookies';
+import UpdatePwd from './container/updatepwd/updatepwd';
+import Article from './container/article/article';
 import {Logout} from './reducer/user.redux';
+import ArticleCom from './component/artic/articcom';
+
 const {Header, Sider, Content} = Layout;
+
 @withRouter
-    @connect(state=>state.user,{
-        Logout
-    })
+@connect(state => state.user, {
+    Logout
+})
 class App extends Component {
     constructor(props) {
         super(props);
         this.toggle = this.toggle.bind(this);
         this.logout = this.logout.bind(this);
         this.state = {
-            collapsed: true
+            collapsed: true,
+            pathurl: ''
         };
     }
 
@@ -31,30 +37,32 @@ class App extends Component {
         this.props.Logout();
     }
 
-    confirm() {
-
+    handleClick(e) {
+        this.props.history.push(e);
     }
 
     render() {
         return (
             <Layout>
-                {this.props.redicertTo ? <Redirect to={this.props.redicertTo} />:null}
+                {this.props.redicertTo && this.props.redicertTo === '/login' ?
+                    <Redirect to={this.props.redicertTo}/> : null}
                 <Sider
                     trigger={null}
                     collapsible
                     collapsed={this.state.collapsed}
                 >
                     <div className="logo"/>
-                    <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
+                    <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}
+                          onClick={(e) => this.handleClick(e.key)}>
                         <Menu.Item key="1">
                             <Icon type="user"/>
                             <span>nav 1</span>
                         </Menu.Item>
-                        <Menu.Item key="2">
+                        <Menu.Item key="article">
                             <Icon type="video-camera"/>
                             <span>文章管理</span>
                         </Menu.Item>
-                        <Menu.Item key="3">
+                        <Menu.Item key="/updatepwd">
                             <Icon type="upload"/>
                             <span>修改密码</span>
                         </Menu.Item>
@@ -76,7 +84,11 @@ class App extends Component {
                         </div>
                     </Header>
                     <Content style={{margin: '24px 16px', padding: 24, background: '#fff', minHeight: 280}}>
-                        Content
+                        <Switch>
+                            <Route path="/updatepwd" component={UpdatePwd}/>
+                            <Route path="/article" component={Article}/>
+                            <Route path="/articleadd" component={ArticleCom}/>
+                        </Switch>
                     </Content>
                 </Layout>
             </Layout>

@@ -45,4 +45,33 @@ router.get('/info', (req, res) => {
     });
 });
 
+router.post('/updatepwd',(req,res)=>{
+    const {userid} = req.cookies;
+    const {oldpwd,newpwd} = req.body;
+
+    Users.findOne({_id:userid},(err1,doc)=>{
+        if (doc.pwd===oldpwd) {
+            Users.findByIdAndUpdate(userid,{pwd:newpwd},(err2,doc)=>{
+                if (doc) {
+                    res.json({
+                        code:0,
+                        msg:"修改密码成功"
+                    });
+                }else{
+                    res.json({
+                        code:1,
+                        msg:"修改密码失败"+err2
+                    });
+                }
+            });
+        }else{
+            return res.json({
+                code:1,
+                msg:"原密码错误",
+                data:[]
+            });
+        }
+    });
+});
+
 module.exports = router;

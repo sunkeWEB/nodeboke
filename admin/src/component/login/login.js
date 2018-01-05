@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Input, Col, Row, Icon, Button, message} from 'antd';
+import {Input, Col, Row, Icon, Button} from 'antd';
 import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom';
 import logosrc from './logo.jpg';
