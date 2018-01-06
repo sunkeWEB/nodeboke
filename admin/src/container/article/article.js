@@ -10,10 +10,15 @@ class Article extends React.Component {
             loading: true,
             pagination: true,
             data: [],
+            editId:''
         };
     }
 
     componentWillMount() {
+        this.loadData();
+    }
+
+    loadData () {
         axios.get('/infoAritic').then(res => {
             if (res.status !== 200 || res.data.code !== 0) {
                 message.warning("数据获取失败");
@@ -24,21 +29,27 @@ class Article extends React.Component {
             });
         });
     }
-
-    del() {
-        alert("1534152");
+    handleProps (id) {
+        this.props.history.push(`/articleupdate/${id}`);
     }
 
+    del (id) {
+        axios.post('/delArtics',{ariticId:id}).then(res=>{
+            if (res.status===200&& res.data.code===0) {
+                this.loadData();
+            }
+        });
+    };
     render() {
-        const columns = [
+        let columns = [
             {
                 title: '作者',
                 dataIndex: 'author',
                 width: '20%'
-            }, {
+            },
+            {
                 title: '标题',
                 dataIndex: 'title',
-                // render: name => `${name.first} ${name.last}`,
                 width: '20%',
             },
             {
@@ -47,27 +58,31 @@ class Article extends React.Component {
                 width: '20%'
             },
             {
-                title: '最后一次操作时间',
+                title: '添加时间',
                 dataIndex: 'time',
                 width: '20%',
-                render(value, record, index) {
+                render(value) {
                     return formatDate(value);
                 }
-            }, {
+            },
+            {
                 title: '操作',
                 width: '20%',
-                render() {
-                    return <div>
-                        <Icon type="delete" style={{marginRight: 10}} onClick={() => this.del()} />
-                        <Icon type="edit" />
-                    </div>
+                render: (value,record) => {
+                    return  (<div>
+                        <Popconfirm placement="topLeft" title="你确定删除嘛?" onConfirm={()=>this.del(record._id)} okText="果断删除"
+                                    cancelText="取消">
+                            <Icon type="delete" style={{marginRight:10}} />
+                        </Popconfirm>
+                        <Icon type="edit" onClick={()=>this.handleProps(record._id)} />
+                    </div>)
                 }
             }
         ];
         return (
             <div>
                 <Button type="primary" style={{marginBottom: 10}}
-                        onClick={() => this.props.history.push('/articleadd')}>添加</Button>
+                        onClick={() => this.props.history.push('/articleadd')} >添加</Button>
                 <Table columns={columns}
                        rowKey={record => Math.random()}
                        dataSource={this.state.data}
@@ -76,8 +91,7 @@ class Article extends React.Component {
                        size={"small"}
                        loading={this.state.loading}
                        bordered={true}
-                    // loading={this.state.loading}
-                    // onChange={this.handleTableChange}
+                       locale={{emptyText:'暂无数据'}}
                 />
             </div>
         )

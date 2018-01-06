@@ -7,6 +7,8 @@ import UpdatePwd from './container/updatepwd/updatepwd';
 import Article from './container/article/article';
 import {Logout} from './reducer/user.redux';
 import ArticleCom from './component/artic/articcom';
+import ArticleComUpdate from './component/artic/articlecomupdate';
+import Timexyz from './component/timexyz/timexyz';
 
 const {Header, Sider, Content} = Layout;
 
@@ -62,6 +64,10 @@ class App extends Component {
                             <Icon type="video-camera"/>
                             <span>文章管理</span>
                         </Menu.Item>
+                        <Menu.Item key="timexyz">
+                            <Icon type="hourglass"/>
+                            <span>时光轴</span>
+                        </Menu.Item>
                         <Menu.Item key="/updatepwd">
                             <Icon type="upload"/>
                             <span>修改密码</span>
@@ -76,18 +82,20 @@ class App extends Component {
                             onClick={this.toggle}
                             style={{color: '#fff'}}
                         />
-                        <div style={{flex: 1, textAlign: 'right', marginRight: 25}}>
+                        <div style={{flex: 1, textAlign: 'right', marginRight: 200, zIndex: 1000000000}}>
                             <Popconfirm placement="topLeft" title="你确定退出吗？" onConfirm={this.logout} okText="退出"
                                         cancelText="取消">
                                 <Icon type="poweroff" style={{fontSize: 20}}/>
                             </Popconfirm>
                         </div>
                     </Header>
-                    <Content style={{margin: '24px 16px', padding: 24, background: '#fff', minHeight: 280}}>
+                    <Content style={{margin: '24px 16px', padding: 24, background: '#fff', marginTop: 80}}>
                         <Switch>
                             <Route path="/updatepwd" component={UpdatePwd}/>
                             <Route path="/article" component={Article}/>
                             <Route path="/articleadd" component={ArticleCom}/>
+                            <Route path="/timexyz" component={Timexyz}/>
+                            <Route path="/articleupdate/:id" component={ArticleComUpdate}/>
                         </Switch>
                     </Content>
                 </Layout>

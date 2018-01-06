@@ -48,7 +48,10 @@ const models = {
             type:String,
             require:true
         },
-        sort:Number, // 置顶
+        sort:{
+            type:Boolean,
+            default:false
+        },
         dianzan:{
             type:Number,
             default:0
