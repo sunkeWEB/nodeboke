@@ -21,6 +21,24 @@ const models = {
         },
         ip: {
             type: String
+        },
+        job: {
+            type: String
+        },
+        name: {
+            type: String,
+            require: true
+        },
+        avatar: {
+            type: String,
+            require: true
+        },
+        desc: {
+            type: String
+        },
+        sex: {
+            type: String,
+            require: true
         }
     },
     articles: {
@@ -32,29 +50,60 @@ const models = {
             type: String,
             default: "code巴神"
         },
+        time: {
+            type: Number,
+            default: Date.now
+        },
+        body: {
+            type: String,
+            require: true
+        },
+        fmimg: {
+            type: String,
+            require: true
+        },
+        dtype: {
+            type: String,
+            require: true
+        },
+        sort: {
+            type: Boolean,
+            default: false
+        },
+        dianzan: {
+            type: Number,
+            default: 0
+        }
+    },
+    timexz: {
+        time: {
+            type: String,
+            require: true
+        },
+        sj: {
+            type: String,
+            require: true
+        },
+        create: {
+            type: Number,
+            default: Date.now
+        }
+    },
+    calcan: {
+        imgurl: {
+            type: String,
+            require: true
+        },
+        js: {
+            type: String
+        },
+        status:{
+            type:Boolean,
+            default:true
+        },
         time:{
             type:Number,
             default:Date.now
-        },
-        body:{
-            type:String,
-            require:true
-        },
-        fmimg:{
-            type:String,
-            require:true
-        },
-        dtype:{
-            type:String,
-            require:true
-        },
-        sort:{
-            type:Boolean,
-            default:false
-        },
-        dianzan:{
-            type:Number,
-            default:0
         }
     }
 };

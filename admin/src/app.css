@@ -56,14 +56,22 @@ th,td{
 .ql-picker-label::before{
     position: absolute;
 }
-.ant-layout-header{
-    position: fixed;
-    top: 0;
-    width: calc(100% - 95px);
-    z-index: 1000000;
-    margin-bottom: 80px;
-}
+/*.ant-layout-header{*/
+    /*position: fixed;*/
+    /*top: 0;*/
+    /*width: calc(100% - 95px);*/
+    /*z-index: 1000000;*/
+    /*margin-bottom: 80px;*/
+/*}*/
 
 .ant-layout-content{
     min-height: inherit;
+}
+.logo1 {
+    margin: 10px;
+}
+.logo {
+    margin: 0 auto;
+    display: inherit;
+    border-radius: 50%;
 }

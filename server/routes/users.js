@@ -74,4 +74,25 @@ router.post('/updatepwd',(req,res)=>{
     });
 });
 
+router.post('/addxx',(req,res)=>{
+    const {userid} = req.cookies;
+    const {job, desc, name, sex, avatar} = req.body;
+    Users.findByIdAndUpdate(userid,{job, desc, name, sex, avatar},(err,doc)=>{
+        if (err) {
+            res.json({
+                code:1,
+                msg:"系统错误",
+                data:[],
+                err_msg:err
+            });
+        }else{
+            res.json({
+                code:0,
+                msg:"success",
+                data:doc
+            });
+        }
+    });
+});
+
 module.exports = router;

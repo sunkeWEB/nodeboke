@@ -37,11 +37,6 @@ class UpdatePwd extends React.Component {
     }
 
 
-    // showMsg() {
-    //     message.destroy();
-    //     message.warning(this.props.msg);
-    //     this.props.clearMsg('');
-    // }
 
     render() {
         return (

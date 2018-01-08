@@ -4,7 +4,8 @@ const multer = require('multer');
 const fs = require('fs');
 const model = require('./../model/db');
 const Articles = model.getModel('articles');
-
+const Timexzs = model.getModel('timexz');
+const Calcan = model.getModel('calcan');
 /* GET home page. */
 router.get('/', function (req, res, next) {
     res.json({title: 'Express123'});
@@ -126,6 +127,88 @@ router.post('/updateAritic',(req,res)=>{
                 code: 0,
                 msg: 'success',
                 data: doc
+            });
+        }
+    });
+});
+
+
+router.post('/addTimexz',(req,res)=>{
+    const {time,sj} = req.body;
+    Timexzs.create({time,sj},(err,doc)=>{
+        if (err) {
+            res.json({code:1,msg:'添加失败'+err,data:[]});
+        }else {
+            res.json({code:0,msg:"添加成功",data:doc});
+        }
+    });
+});
+
+router.get('/getTimexz',(req,res)=>{
+    Timexzs.find({},(err,doc)=>{
+        if (err) {
+            res.json({
+                code:1,
+                msg:"系统失败"
+            });
+        }else {
+            res.json({
+                code:0,
+                msg:"success",
+                data:doc
+            });
+        }
+    });
+});
+
+router.post('/deltimexz',(req,res)=>{
+    const {id} = req.body;
+    Timexzs.remove({_id:id},(err,doc)=>{
+        if (err) {
+            res.json({
+                code:1,
+                msg:"系统错误"
+            });
+        }else {
+            res.json({
+                code:0,
+                msg:'success',
+                data:doc
+            });
+        }
+    });
+});
+
+router.post('/addcalcan',(req,res)=>{
+    const {calcanavatar, js} = req.body;
+    Calcan.create({imgurl:calcanavatar, js},(err,doc)=>{
+        if (err) {
+            res.json({
+                code:1,
+                msg:"系统错误"
+            });
+        }else {
+            res.json({
+                code:0,
+                msg:"success",
+                data:doc
+            });
+        }
+    });
+});
+
+router.get('/getCalcan',(req,res)=>{
+    Calcan.find({},(err,doc)=>{
+        if (err) {
+            res.json({
+                code:1,
+                msg:"系统失败"
+            });
+        }else {
+            res.json({
+                code:0,
+                msg:"success",
+                data:doc
             });
         }
     });

@@ -10,7 +10,12 @@ const init = {
     isAuth: false,
     user: '',
     msg: '',
-    redicertTo: ''
+    redicertTo: '',
+    name:'',
+    avatar:'',
+    job:'',
+    sex:'',
+    desc:''
 };
 
 export function user(state = init, action) {

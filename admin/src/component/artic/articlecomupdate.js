@@ -43,6 +43,7 @@ class Demo extends React.Component {
                     dtype: ''
                 });
                 message.success(res.data.msg);
+                // this.props.history.push('/');
             } else {
                 message.error(res.data.msg);
             }
@@ -101,7 +102,6 @@ class Demo extends React.Component {
     }
 
     render() {
-        const {getFieldDecorator} = this.props.form;
         const formItemLayout = {
             labelCol: {span: 6},
             wrapperCol: {span: 14},
