@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Input, Col, Row, Icon, Button} from 'antd';
+import {Input, Col, Row, Icon, Button,message} from 'antd';
 import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom';
 import logosrc from './logo.jpg';
@@ -12,7 +12,6 @@ class Login extends Component {
     constructor(props) {
         super(props);
         this.login = this.login.bind(this);
-        // this.errMsg = this.errMsg.bind(this);
         this.state = {
             loginStatus: false,
             pwd: '',
@@ -32,14 +31,14 @@ class Login extends Component {
             loginStatus: true
         });
         this.props.Logins({...this.state});
-        // setTimeout(() => {
-        //     this.setState({
-        //         loginStatus: false
-        //     });
-        //     if (this.props.msg) {
-        //         message.error(this.props.msg);
-        //     }
-        // }, 1888);
+        setTimeout(() => {
+            this.setState({
+                loginStatus: false
+            });
+            if (this.props.msg) {
+                message.error(this.props.msg);
+            }
+        }, 888);
     }
 
     render() {
@@ -53,7 +52,7 @@ class Login extends Component {
                     <Col xs={24} sm={24} md={8} xl={5} lg={10}>
                         <div>
                             <div style={{textAlign: "center", margin: 15}}>
-                                <img className="loginimg" src={logosrc} alt=""/>
+                                <img className="loginimg" style={{width:80,height:80}} src={logosrc} alt=""/>
                             </div>
                             <div>
                                 <Input

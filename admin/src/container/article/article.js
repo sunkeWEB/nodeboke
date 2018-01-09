@@ -3,6 +3,10 @@ import {Table, Button, message, Icon, Popconfirm} from 'antd';
 import axios from 'axios';
 import {formatDate} from './../../until';
 
+message.config({
+    top: 70
+});
+
 class Article extends React.Component {
     constructor(props) {
         super(props);
@@ -55,19 +59,35 @@ class Article extends React.Component {
             {
                 title: '类型',
                 dataIndex: "dtype",
-                width: '20%'
+                width: '80px'
+            },
+            {
+                title:"点赞数",
+                dataIndex: "dianzan",
+                width:'80px',
+                render:(value)=>{
+                    return value.length
+                }
+            },
+            {
+                title:"评论数",
+                dataIndex: "comment",
+                width:'80px',
+                render:(value)=>{
+                    return value.length
+                }
             },
             {
                 title: '添加时间',
                 dataIndex: 'time',
-                width: '20%',
-                render(value) {
+                width: '80px',
+                render:(value) => {
                     return formatDate(value);
                 }
             },
             {
                 title: '操作',
-                width: '20%',
+                width: '80px',
                 render: (value,record) => {
                     return  (<div>
                         <Popconfirm placement="topLeft" title="你确定删除嘛?" onConfirm={()=>this.del(record._id)} okText="果断删除"

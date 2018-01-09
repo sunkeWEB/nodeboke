@@ -70,10 +70,18 @@ const models = {
             type: Boolean,
             default: false
         },
-        dianzan: {
-            type: Number,
-            default: 0
-        }
+        dianzan: [{
+            dianzanname:String
+        }],
+        comment: [{
+            cmmentname: {
+                type: String
+            },
+            commenttime: {
+                type: Number,
+                default:Date.now
+            }
+        }]
     },
     timexz: {
         time: {
@@ -97,13 +105,37 @@ const models = {
         js: {
             type: String
         },
-        status:{
-            type:Boolean,
-            default:true
+        status: {
+            type: Boolean,
+            default: true
         },
-        time:{
-            type:Number,
-            default:Date.now
+        time: {
+            type: Number,
+            default: Date.now
+        },
+        sort: {
+            type: Number,
+            default: 1
+        }
+    },
+    dtype: {
+        name: {
+            type: String,
+            require: true
+        },
+        sort: {
+            type: Number,
+            default: 1
+        },
+        time: {
+            type: Number,
+            default: Date.now
+        },
+        js: {
+            type: String
+        },
+        ip: {
+            type: String,
         }
     }
 };

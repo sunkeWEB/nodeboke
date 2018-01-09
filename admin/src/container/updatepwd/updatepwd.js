@@ -4,7 +4,9 @@ import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom';
 import {UpdatePwds, clearMsg} from './../../reducer/user.redux';
 import browserCookies from 'browser-cookies';
-
+message.config({
+    top: 70
+});
 @connect(state => state.user, {
     UpdatePwds, clearMsg
 })
@@ -25,7 +27,11 @@ class UpdatePwd extends React.Component {
     }
 
     updateSubmit() {
-        this.props.UpdatePwds({...this.state})
+        this.props.UpdatePwds({...this.state});
+        setTimeout(()=>{
+            message.destroy();
+            message.warn(this.props.msg);
+        },800)
     }
 
     lougout() {

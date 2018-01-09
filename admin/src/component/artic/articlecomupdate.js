@@ -5,9 +5,12 @@ import {
 import axios from 'axios';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import Selects from './../../component/select/select';
 
 const FormItem = Form.Item;
-
+message.config({
+    top: 70
+});
 const Option = Select.Option;
 
 class Demo extends React.Component {
@@ -25,6 +28,7 @@ class Demo extends React.Component {
             showUploadBtn: true
         };
     }
+
     submitServer() {
         const state = this.state;
         if (state.title === '' || state.body === '' || state.dtype === '' || state.fmimg === '') {
@@ -32,7 +36,7 @@ class Demo extends React.Component {
             message.warning("必要填写东西必须填写");
             return false;
         }
-        axios.post('/updateAritic', {id: this.props.match.params.id,...this.state}).then(res => {
+        axios.post('/updateAritic', {id: this.props.match.params.id, ...this.state}).then(res => {
             if (res.status === 200 && res.data.code === 0) {
                 this.setState({
                     disabled: false,
@@ -148,14 +152,7 @@ class Demo extends React.Component {
                         label="类型"
                         hasFeedback
                     >
-                        <Select placeholder="文章类型" onChange={(e) => this.handleSubmit('dtype', e)}
-                                value={this.state.dtype}>
-                            <Option value="html/css" key="html">html/css</Option>
-                            <Option value="React" key="React">Reactjs</Option>
-                            <Option value="Vue" key="Vue">Vuejs</Option>
-                            <Option value="nodejs" key="nodejs">nodejs</Option>
-                            <Option value="php" key="php">php</Option>
-                        </Select>
+                        <Selects handlesubmit={(e) => this.handleSubmit('dtype', e)} value={this.state.dtype} />
                     </FormItem>
                     <FormItem
                         {...formItemLayout}
@@ -194,5 +191,6 @@ class Demo extends React.Component {
         )
     }
 }
+
 const ArticCom = Form.create()(Demo);
 export default ArticCom;

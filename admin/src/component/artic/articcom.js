@@ -3,11 +3,15 @@ import {
     Form, Select, Switch, Button, Upload, Icon, Input, message
 } from 'antd';
 import axios from 'axios';
+import Selects from './../select/select';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
+message.config({
+    top: 70
+});
 
 class Demo extends React.Component {
     constructor(props) {
@@ -101,8 +105,8 @@ class Demo extends React.Component {
         ];
         return (
             <div>
-                <Button onClick={()=>this.props.history.go(-1)}>
-                    <Icon type="left" />Back
+                <Button onClick={() => this.props.history.go(-1)}>
+                    <Icon type="left"/>Back
                 </Button>
                 <Form onSubmit={this.handleSubmit}>
                     <FormItem
@@ -116,13 +120,7 @@ class Demo extends React.Component {
                         label="类型"
                         hasFeedback
                     >
-                        <Select placeholder="文章类型" onChange={(e) => this.handleSubmit('dtype', e)}>
-                            <Option value="html/css" key="html">html/css</Option>
-                            <Option value="React" key="React">Reactjs</Option>
-                            <Option value="Vue" key="Vue">Vuejs</Option>
-                            <Option value="nodejs" key="nodejs">nodejs</Option>
-                            <Option value="php" key="php">php</Option>
-                        </Select>
+                        <Selects handlesubmit={(e)=>this.handleSubmit('dtype', e)} />
                     </FormItem>
                     <FormItem
                         {...formItemLayout}

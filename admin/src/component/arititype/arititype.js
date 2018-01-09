@@ -1,20 +1,13 @@
 import React from 'react';
-import {Table, Icon, Popconfirm, Button, Modal, DatePicker, Input, message} from 'antd';
-// 推荐在入口文件全局设置 locale
-import moment from 'moment';
-
+import {Table, Icon, Popconfirm, Button, Modal, Input, message, InputNumber} from 'antd';
 import axios from 'axios';
-
-// 推荐在入口文件全局设置 locale
-import 'moment/locale/zh-cn';
-
 import {formatDate} from './../../until';
 
-moment.locale('zh-cn');
 message.config({
     top: 70
 });
-class Timexyz extends React.Component {
+
+class Arititype extends React.Component {
     constructor(props) {
         super(props);
         this.handleCancel = this.handleCancel.bind(this);
@@ -22,10 +15,11 @@ class Timexyz extends React.Component {
         this.submitSe = this.submitSe.bind(this);
         this.state = {
             confirmLoading: false,
-            time: '',
-            sj: '',
+            name: '',
+            js: '',
+            sort: '',
             modalshow: false,
-            modaltitle: "添加事件",
+            modaltitle: "添加类型",
             okText: "添加",
             calText: "取消",
             loading: true,
@@ -48,30 +42,28 @@ class Timexyz extends React.Component {
     }
 
     submitSe() {
-        this.setState({
-            confirmLoading: true
-        });
-        const time = this.state.time ? this.state.time : moment().format('L').replace(/\//g, "-");  // 这里用到了 replace  因为数据库是2018-01-18  统一格式
-        const sj = this.state.sj;
-        axios.post('/addTimexz', {time, sj}).then(res => {
+        const {name, js, sort} = {...this.state};
+        axios.post('/addtypes', {name, js, sort}).then(res => {
             if (res.status === 200 && res.data.code === 0) {
                 message.success(res.data.msg);
+                this.setState({
+                    modalshow:false,
+                    js:'',
+                    name:'',
+                    sort:''
+                });
                 this.loadData();
-            } else {
-                message.success(res.data.msg);
+            }else{
+                message.warn("获取数据失败");
             }
-            this.setState({
-                sj: '',
-                confirmLoading: false,
-                modalshow: false
-            });
         });
     }
 
     del(id) {
         axios.post('/deltimexz', {id}).then(res => {
+            message.destroy();
             if (res.status === 200 && res.data.code === 0) {
-                message.warn(res.data.msg);
+                message.success(res.data.msg);
                 this.loadData();
             } else {
                 message.warn(res.data.msg);
@@ -84,7 +76,7 @@ class Timexyz extends React.Component {
     }
 
     loadData() {
-        axios.get('/getTimexz').then(res => {
+        axios.get('/getDtype').then(res => {
             if (res.status === 200 && res.data.code === 0) {
                 this.setState({
                     data: res.data.data
@@ -98,21 +90,32 @@ class Timexyz extends React.Component {
         });
     }
 
+    del (id) {
+        axios.post('/deldtype',{id}).then(res=>{
+            if (res.status === 200 && res.data.code === 0) {
+                message.warn(res.data.msg);
+                this.loadData();
+            } else {
+                message.warn(res.data.msg);
+            }
+        });
+    }
+
     render() {
         let columns = [
             {
-                title: '时间',
-                dataIndex: 'time',
+                title: '名称',
+                dataIndex: 'name',
                 width: '30%'
             },
             {
-                title: '事件',
-                dataIndex: 'sj',
+                title: '描述',
+                dataIndex: 'js',
                 width: '40%',
             },
             {
                 title: '创建时间',
-                dataIndex: 'create',
+                dataIndex: 'time',
                 width: '20%',
                 render: (value) => {
                     return formatDate(value);
@@ -132,11 +135,6 @@ class Timexyz extends React.Component {
                 }
             }
         ];
-        const localeoption = {
-            "placeholder": "选择日期",
-            "today": "选择今天",
-            "yearFormat": "YYYY",
-        };
         return (
             <div>
                 <Button type="primary" onClick={() => this.setState({modalshow: true})}
@@ -162,10 +160,13 @@ class Timexyz extends React.Component {
                        onCancel={this.handleCancel}
                 >
                     <div>
-                        <DatePicker className="marginBottom" onChange={this.onChange} locale={{lang: localeoption}}
-                                    style={{width: '100%'}} showToday={false}
-                                    defaultValue={moment(moment().format('L'), 'YYYY-MM-DD')}/>
-                        <Input onChange={(e) => this.setState({sj: e.target.value})} placeholder="简短的描述一下呗"/>
+                        <Input value={this.state.name} onChange={(e) => this.setState({name: e.target.value})} placeholder="类型名称"
+                               className="marginBottom"/>
+                        <InputNumber style={{width: '100%'}} placeholder="数字越大  越靠前"
+                                     onChange={(e) => this.setState({sort: e})} className="marginBottom"
+                                     value={this.state.sort}
+                        />
+                        <Input onChange={(e) => this.setState({js: e.target.value})} placeholder="简短的描述一下呗" value={this.state.js} />
                     </div>
                 </Modal>
             </div>
@@ -173,4 +174,5 @@ class Timexyz extends React.Component {
     }
 }
 
-export default Timexyz;
+
+export default Arititype;

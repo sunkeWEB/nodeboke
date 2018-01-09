@@ -9,6 +9,9 @@ import {connect} from 'react-redux';
 import {loadDate} from './../../reducer/user.redux';
 const FormItem = Form.Item;
 const Option = Select.Option;
+message.config({
+    top: 70
+});
 @withRouter
 @connect(state => state, {loadDate})
 class Userinfo extends React.Component {

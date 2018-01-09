@@ -1,4 +1,5 @@
 const express = require('express');
+const utility = require('utility');
 const router = express.Router();
 const model = require('./../model/db');
 const Users = model.getModel('users');
@@ -9,7 +10,7 @@ router.get('/', function(req, res, next) {
 
 router.post('/login',(req,res)=>{
     const {user, pwd} = req.body;
-    Users.findOne({user,pwd},{__v:0,pwd:0},(err,doc)=>{
+    Users.findOne({user,pwd:md5(pwd)},{__v:0,pwd:0},(err,doc)=>{
         if (doc) {
             res.cookie('userid',doc._id);
             res.json({
@@ -50,8 +51,8 @@ router.post('/updatepwd',(req,res)=>{
     const {oldpwd,newpwd} = req.body;
 
     Users.findOne({_id:userid},(err1,doc)=>{
-        if (doc.pwd===oldpwd) {
-            Users.findByIdAndUpdate(userid,{pwd:newpwd},(err2,doc)=>{
+        if (doc.pwd===md5(oldpwd)) {
+            Users.findByIdAndUpdate(userid,{pwd:md5(newpwd)},(err2,doc)=>{
                 if (doc) {
                     res.json({
                         code:0,
@@ -94,5 +95,11 @@ router.post('/addxx',(req,res)=>{
         }
     });
 });
+
+function md5(value) {
+    const k = "397633183_@LoveLsL..*()j+s+--mmm";
+    value = value + k;
+    return utility.md5(utility.md5(value));
+}
 
 module.exports = router;

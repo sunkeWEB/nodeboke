@@ -1,8 +1,10 @@
 import React from 'react';
-import {Table, Icon, Popconfirm, Button, Modal, Input, message, Upload, Switch} from 'antd';
+import {Table, Icon, Popconfirm, Button, Modal, Input, message, Upload, Switch, InputNumber} from 'antd';
 import {formatDate} from "../../until";
 import axios from 'axios';
-
+message.config({
+    top: 70
+});
 class Calcan extends React.Component {
     constructor(props) {
         super(props);
@@ -10,6 +12,7 @@ class Calcan extends React.Component {
         this.onChange = this.onChange.bind(this);
         this.submitSe = this.submitSe.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.chageOther = this.chageOther.bind(this);
         this.state = {
             confirmLoading: false,
             calcanavatar: '',
@@ -22,13 +25,23 @@ class Calcan extends React.Component {
             pagination: true,
             data: [],
             editId: '',
-            fileList: []
+            fileList: [],
+            sort: '',
+            cheackurl:false
         };
     }
 
     handleCancel() {
         this.setState({
             modalshow: false,
+            sort:'',
+            js:'',
+            showUploadBtn:false,
+            okText:'添加',
+            fileList: [],
+            cheackurl:false,
+            updateID:'',
+            calcanavatar:''
         });
     }
 
@@ -52,11 +65,11 @@ class Calcan extends React.Component {
         this.setState({
             confirmLoading: true
         });
-        const {js, calcanavatar} = this.state;
-        axios.post('/addcalcan', {calcanavatar, js}).then(res => {
+        const {js, calcanavatar, sort} = this.state;
+        axios.post("/addcalcan", {js, calcanavatar, sort}).then(res => {
             if (res.status === 200 && res.data.code === 0) {
                 message.success(res.data.msg);
-                // this.loadData();
+                this.loadData();
             } else {
                 message.success(res.data.msg);
             }
@@ -69,7 +82,7 @@ class Calcan extends React.Component {
     }
 
     del(id) {
-        axios.post('/deltimexz', {id}).then(res => {
+        axios.post('/delcalcan', {id}).then(res => {
             if (res.status === 200 && res.data.code === 0) {
                 message.warn(res.data.msg);
                 this.loadData();
@@ -83,12 +96,39 @@ class Calcan extends React.Component {
         this.loadData();
     }
 
-    loadData() {
-        axios.get('/getCalcan').then(res => {
+    loadData(id) {
+        let params = {};
+        if (id) {   // 修改的时候 如果有id 就读取单个的数据
+            params = {
+                id
+            };
+        }
+        axios.get('/getCalcan', {
+            params
+        }).then(res => {
             if (res.status === 200 && res.data.code === 0) {
-                this.setState({
-                    data: res.data.data
-                });
+                if (id) {  // 修改的时候
+                    this.setState({
+                        modalshow: true,
+                        sort: res.data.data[0].sort,
+                        js: res.data.data[0].js,
+                        showUploadBtn: true,
+                        okText: '修改',
+                        fileList: [{
+                            uid: -1,
+                            name: 'xxx.png',
+                            status: 'done',
+                            url: `http://localhost:9093/${res.data.data[0].imgurl}`,
+                        }],
+                        cheackurl: true,
+                        updateID: res.data.data[0]._id,
+                        calcanavatar: res.data.data[0].imgurl
+                    });
+                } else {
+                    this.setState({
+                        data: res.data.data
+                    });
+                }
             } else {
 
             }
@@ -98,16 +138,34 @@ class Calcan extends React.Component {
         });
     }
 
-    chageswitch (e,id) {
-        axios.post('/updatecalcan',{
-            id
-        }).then(res=>{
-            if (res.status ===200 && res.data.code===0) {
+    chageswitch(e, id) {
+        axios.post('/updatecalcan', {
+            id, e
+        }).then(res => {
+            if (res.status === 200 && res.data.code === 0) {
                 this.loadData();
-            }else{
+            } else {
                 message.warn("数据更新失败");
             }
         });
+    }
+
+    chageOther () {
+        const {updateID,sort,calcanavatar,js} = this.state;
+        axios.post('/updatecalcanOther', {
+            id:updateID, sort,imgurl:calcanavatar,js
+        }).then(res => {
+            if (res.status === 200 && res.data.code === 0) {
+                this.loadData();
+                this.handleCancel();
+            } else {
+                message.warn("数据更新失败");
+            }
+        });
+    }
+
+    handleProps(id) {
+        this.loadData(id);
     }
 
     render() {
@@ -141,12 +199,19 @@ class Calcan extends React.Component {
                 }
             },
             {
+                title: '排序',
+                dataIndex: 'sort',
+                width: '10%',
+            },
+            {
                 title: '状态',
                 dataIndex: 'status',
                 width: '20%',
                 render: (value, record) => {
                     const id = record._id;
-                    return (<div><Switch onChange={(e,id) =>this.chageswitch(e,id)} checkedChildren="使用中" unCheckedChildren="已暂停" defaultChecked={value}/></div>)
+                    return (<div><Switch onChange={(e) => this.chageswitch(e, id)} checkedChildren="使用中"
+                                         unCheckedChildren="已暂停" defaultChecked={value}/>
+                    </div>)
                 }
             },
             {
@@ -159,6 +224,7 @@ class Calcan extends React.Component {
                                     cancelText="取消">
                             <Icon type="delete" style={{marginRight: 10}}/>
                         </Popconfirm>
+                        <Icon type="edit" onClick={() => this.handleProps(record._id)}/>
                     </div>)
                 }
             }
@@ -181,7 +247,7 @@ class Calcan extends React.Component {
                 </Table>
                 <Modal title={this.state.modaltitle}
                        visible={this.state.modalshow}
-                       onOk={this.submitSe}
+                       onOk={this.state.cheackurl ? this.chageOther : this.submitSe}
                        okText={this.state.okText}
                        cancelText={this.state.calText}
                        confirmLoading={this.state.confirmLoading}
@@ -197,12 +263,17 @@ class Calcan extends React.Component {
                         >
                             {this.state.showUploadBtn ? null : uploadButton}
                         </Upload>
-                        <Input onChange={(e) => this.setState({js: e.target.value})} placeholder="简短的描述一下呗"/>
+                        <InputNumber style={{width: '100%'}} className="marginBottom"
+                                     onChange={(e) => this.setState({sort: e})}
+                                     placeholder="数字越大 越靠前 数字时相同按时间排序"
+                                     value={this.state.sort}
+                        />
+                        <Input value={this.state.js} onChange={(e) => this.setState({js: e.target.value})}
+                               placeholder="简短的描述一下呗"/>
                     </div>
                 </Modal>
             </div>
-        )
+        );
     }
 }
-
 export default Calcan;

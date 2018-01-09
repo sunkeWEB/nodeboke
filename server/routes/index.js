@@ -6,6 +6,7 @@ const model = require('./../model/db');
 const Articles = model.getModel('articles');
 const Timexzs = model.getModel('timexz');
 const Calcan = model.getModel('calcan');
+const Dtype = model.getModel('dtype');
 /* GET home page. */
 router.get('/', function (req, res, next) {
     res.json({title: 'Express123'});
@@ -74,48 +75,7 @@ router.get('/infoAritic', (req, res) => {
     if (id) {
         findtj['_id'] = id;
     }
-    Articles.find(findtj, {__v:0},(err, doc) => {
-        if (err) {
-            res.json({
-                code: 1,
-                msg: 'error',
-                data: err
-            });
-        }else{
-            res.json({
-                code: 0,
-                msg: 'success',
-                data: doc
-            });
-        }
-    });
-});
-
-// 删除
-router.post('/delArtics',(req,res)=>{
-    const ariticId = req.body.ariticId;
-    Articles.remove({_id:ariticId},(err,doc)=>{
-        if (err) {
-            res.json({
-                code:1,
-                msg:"删除失败"+err
-            });
-        }else{
-            res.json({
-                code:0,
-                msg:"success",
-                data:doc
-            });
-        }
-
-    })
-});
-
-// 修改
-router.post('/updateAritic',(req,res)=>{
-    let {title, body, sort, fmimg, dtype,id} = req.body;
-    console.log({id});
-    Articles.update({_id:id},{title, body, sort, fmimg, dtype}, (err, doc) => {
+    Articles.find(findtj, {__v: 0}, (err, doc) => {
         if (err) {
             res.json({
                 code: 1,
@@ -132,42 +92,200 @@ router.post('/updateAritic',(req,res)=>{
     });
 });
 
-
-router.post('/addTimexz',(req,res)=>{
-    const {time,sj} = req.body;
-    Timexzs.create({time,sj},(err,doc)=>{
+// 删除
+router.post('/delArtics', (req, res) => {
+    const ariticId = req.body.ariticId;
+    Articles.remove({_id: ariticId}, (err, doc) => {
         if (err) {
-            res.json({code:1,msg:'添加失败'+err,data:[]});
-        }else {
-            res.json({code:0,msg:"添加成功",data:doc});
+            res.json({
+                code: 1,
+                msg: "删除失败" + err
+            });
+        } else {
+            res.json({
+                code: 0,
+                msg: "success",
+                data: doc
+            });
+        }
+
+    })
+});
+
+// 修改
+router.post('/updateAritic', (req, res) => {
+    let {title, body, sort, fmimg, dtype, id} = req.body;
+    console.log({id});
+    Articles.update({_id: id}, {title, body, sort, fmimg, dtype}, (err, doc) => {
+        if (err) {
+            res.json({
+                code: 1,
+                msg: 'error',
+                data: err
+            });
+        } else {
+            res.json({
+                code: 0,
+                msg: 'success',
+                data: doc
+            });
         }
     });
 });
 
-router.get('/getTimexz',(req,res)=>{
-    Timexzs.find({},(err,doc)=>{
+router.post('/addTimexz', (req, res) => {
+    const {time, sj} = req.body;
+    Timexzs.create({time, sj}, (err, doc) => {
+        if (err) {
+            res.json({code: 1, msg: '添加失败' + err, data: []});
+        } else {
+            res.json({code: 0, msg: "添加成功", data: doc});
+        }
+    });
+});
+
+router.get('/getTimexz', (req, res) => {
+    Timexzs.find({}, (err, doc) => {
         if (err) {
             res.json({
-                code:1,
-                msg:"系统失败"
+                code: 1,
+                msg: "系统失败"
             });
-        }else {
+        } else {
             res.json({
-                code:0,
-                msg:"success",
-                data:doc
+                code: 0,
+                msg: "success",
+                data: doc
             });
         }
     });
 });
 
-router.post('/deltimexz',(req,res)=>{
+router.post('/deltimexz', (req, res) => {
     const {id} = req.body;
-    Timexzs.remove({_id:id},(err,doc)=>{
+    Timexzs.remove({_id: id}, (err, doc) => {
+        if (err) {
+            res.json({
+                code: 1,
+                msg: "系统错误"
+            });
+        } else {
+            res.json({
+                code: 0,
+                msg: 'success',
+                data: doc
+            });
+        }
+    });
+});
+
+router.post('/addcalcan', (req, res) => {
+    const {calcanavatar, js,sort} = req.body;
+    Calcan.create({imgurl: calcanavatar, js,sort}, (err, doc) => {
+        if (err) {
+            res.json({
+                code: 1,
+                msg: "系统错误"
+            });
+        } else {
+            res.json({
+                code: 0,
+                msg: "success",
+                data: doc
+            });
+        }
+    });
+});
+
+router.get('/getCalcan', (req, res) => {
+    const {id} = req.query;
+    let serch = {};
+    if (id) {
+        serch = {
+            _id:id
+        };
+    }
+    Calcan.find(serch, (err, doc) => {
+        if (err) {
+            res.json({
+                code: 1,
+                msg: "系统失败"
+            });
+        } else {
+            res.json({
+                code: 0,
+                msg: "success",
+                data: doc
+            });
+        }
+    });
+});
+
+router.post('/updatecalcan', (req, res) => {
+    const {id, e} = req.body;
+    Calcan.findByIdAndUpdate(id, {status: e}, (err, doc) => {
+        if (err) {
+            res.json({
+                code: 1,
+                msg: "系统错误",
+                err_msg: err
+            });
+        } else {
+            res.json({
+                code: 0,
+                msg: 'success',
+                data: doc
+            });
+        }
+    });
+});
+
+
+router.post('/updatecalcanOther', (req, res) => {
+    const {id,sort,js,imgurl} = req.body;
+    Calcan.findByIdAndUpdate(id, {sort,js,imgurl}, (err, doc) => {
+        if (err) {
+            res.json({
+                code: 1,
+                msg: "系统错误",
+                err_msg: err
+            });
+        } else {
+            res.json({
+                code: 0,
+                msg: 'success',
+                data: doc
+            });
+        }
+    });
+});
+
+router.post('/delcalcan',(req,res)=>{
+    const {id} = req.body;
+    Calcan.remove({_id:id},(err,doc)=>{
+        if (err) {
+            res.json({
+                code: 1,
+                msg: "系统错误"
+            });
+        } else {
+            res.json({
+                code: 0,
+                msg: 'success',
+                data: doc
+            });
+        }
+    });
+});
+
+router.post('/addtypes',(req,res)=>{
+    const {name,sort,js} = req.body;
+    Dtype.create({name,sort,js},(err,doc)=>{
         if (err) {
             res.json({
                 code:1,
-                msg:"系统错误"
+                msg:"系统错误",
+                err_msg:err
             });
         }else {
             res.json({
@@ -179,32 +297,34 @@ router.post('/deltimexz',(req,res)=>{
     });
 });
 
-router.post('/addcalcan',(req,res)=>{
-    const {calcanavatar, js} = req.body;
-    Calcan.create({imgurl:calcanavatar, js},(err,doc)=>{
+router.get('/getDtype',(req,res)=>{
+    Dtype.find({},null,{sort:{'sort':-1}},(err,doc)=>{
         if (err) {
             res.json({
                 code:1,
-                msg:"系统错误"
+                msg:"系统错误",
+                err_msg:err
             });
         }else {
             res.json({
                 code:0,
-                msg:"success",
+                msg:"获取数据成功",
                 data:doc
             });
         }
     });
 });
 
-router.get('/getCalcan',(req,res)=>{
-    Calcan.find({},(err,doc)=>{
+router.post('/deldtype', (req, res) => {
+    const {id} = req.body;
+    Dtype.remove({_id:id},(err,doc)=>{
         if (err) {
             res.json({
                 code:1,
-                msg:"系统失败"
+                msg:"err",
+                err_msg:err
             });
-        }else {
+        }else{
             res.json({
                 code:0,
                 msg:"success",
