@@ -75,3 +75,10 @@ th,td{
     display: inherit;
     border-radius: 50%;
 }
+.ant-popover {
+    z-index: 1000000000;
+}
+.ant-layout-header{
+    background: linear-gradient(to right,#001529 0,#00152990 100%) !important;
+    color: #fff !important;
+}

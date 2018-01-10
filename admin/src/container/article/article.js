@@ -2,7 +2,7 @@ import React from 'react';
 import {Table, Button, message, Icon, Popconfirm} from 'antd';
 import axios from 'axios';
 import {formatDate} from './../../until';
-
+import QueueAnim from 'rc-queue-anim';
 message.config({
     top: 70
 });
@@ -103,16 +103,18 @@ class Article extends React.Component {
             <div>
                 <Button type="primary" style={{marginBottom: 10}}
                         onClick={() => this.props.history.push('/articleadd')} >添加</Button>
-                <Table columns={columns}
-                       rowKey={record => Math.random()}
-                       dataSource={this.state.data}
-                       pagination={this.state.pagination}
-                       scroll={{x: true}}
-                       size={"small"}
-                       loading={this.state.loading}
-                       bordered={true}
-                       locale={{emptyText:'暂无数据'}}
-                />
+                <QueueAnim delay={300} className="queue-simple">
+                    <Table columns={columns}
+                           rowKey={record => Math.random()}
+                           dataSource={this.state.data}
+                           pagination={this.state.pagination}
+                           scroll={{x: true}}
+                           size={"small"}
+                           loading={this.state.loading}
+                           bordered={true}
+                           locale={{emptyText:'暂无数据'}}
+                    />
+                </QueueAnim>
             </div>
         )
     }

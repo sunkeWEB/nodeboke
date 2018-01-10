@@ -109,10 +109,9 @@ class App extends Component {
                 </Sider>
                 <Layout>
                     <Header style={{
-                        background: 'deepskyblue',
                         padding: 0,
                         display: "flex",
-                        color: '#fff',
+                        // color: '#fff',
                         position: 'fixed',
                         width: '96%',
                         zIndex: 100000
