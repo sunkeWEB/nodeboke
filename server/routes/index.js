@@ -92,6 +92,31 @@ router.get('/infoAritic', (req, res) => {
     });
 });
 
+// 手机api
+router.get('/infoAritic2',(req,res)=>{
+    let id = req.query.id;
+    let findtj = {};
+    if (id) {
+        findtj['_id'] = id;
+    }
+    Articles.find({}).sort({time:'-1'}).limit(10).exec((err, doc) =>{
+        if (err) {
+            res.json({
+                code: 1,
+                msg: 'error',
+                data: err
+            });
+        } else {
+            res.json({
+                code: 0,
+                msg: 'success',
+                data: doc
+            });
+        }
+    })
+});
+
+
 // 删除
 router.post('/delArtics', (req, res) => {
     const ariticId = req.body.ariticId;
