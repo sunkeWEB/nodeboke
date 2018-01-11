@@ -1,20 +1,33 @@
 import React from 'react'
+import {withRouter} from 'react-router-dom'
 
+@withRouter
 class Navmenu extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            data: [],
+            selectli: true
+        };
+    }
+
+    handleRoute(e) {
+        this.props.handleClick(e);
+        this.props.history.push(`/article/${e}`);
+    }
+
     render() {
-        const arritem = [
-            {name: 'html/css', key: 1},
-            {name: 'node', key: 2},
-            {name: 'react', key: 3},
-            {name: 'vue', key: 4},
-        ];
+        const active = this.props.selectmenu;
         return (
-            <div style={{display:'flex',borderBottom:'1px solid rgba(178,186,194,.4)'}}>
-                <div style={{width:100}}>热门文章</div>
-                <div style={{flex:1,textAlign:'right'}}>
-                    <ul style={{display:'flex'}} className="navitemsul">
-                        {arritem.map(v=>(
-                            <li key={v.key} style={{marginRight:20}}>{v.name}</li>
+            <div style={{display: 'flex', borderBottom: '1px solid rgba(178,186,194,.4)'}}>
+                <div style={{width: 100}}>文章列表</div>
+                <div style={{flex: 1, textAlign: 'right'}}>
+                    <ul style={{display: 'flex'}} className="navitemsul">
+                        {this.props.menudatas.map(v => (
+                            <li className={active === v.name ? 'activenav' : ''} key={v.js} style={{marginRight: 20}}
+                                onClick={(e) => this.handleRoute(v.name, e)}>
+                                <a href="javascript:void(0)" style={{textDecoration:'none'}}>{v.name}</a>
+                            </li>
                         ))}
                     </ul>
                 </div>

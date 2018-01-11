@@ -12,6 +12,7 @@ import ArticleComUpdate from './component/artic/articlecomupdate';
 import Timexyz from './component/timexyz/timexyz';
 import UserInfo from './component/userinfo/userinfo';
 import Calcan from './component/calcan/calcan';
+import WzInfo from './component/wzinfo/wzinfo';
 
 const {Header, Sider, Content} = Layout;
 const SubMenu = Menu.SubMenu;
@@ -96,6 +97,10 @@ class App extends Component {
                             <span>文章类型管理</span>
                         </Menu.Item>
                         <SubMenu key="sub1" title={<span><Icon type="setting"/><span>系统设置</span></span>}>
+                            <Menu.Item key="/wzinfo">
+                                <Icon type="idcard"/>
+                                <span>网站信息</span>
+                            </Menu.Item>
                             <Menu.Item key="/userinfo">
                                 <Icon type="idcard"/>
                                 <span>个人信息</span>
@@ -129,18 +134,19 @@ class App extends Component {
                             </Popconfirm>
                         </div>
                     </Header>
-                        <Content style={{margin: '24px 16px', padding: 24, background: '#fff', marginTop: 80}}>
-                            <Switch>
-                                <Route path="/calcan" component={Calcan}/>
-                                <Route path="/updatepwd" component={UpdatePwd}/>
-                                <Route path="/article" component={Article}/>
-                                <Route path="/articleadd" component={ArticleCom}/>
-                                <Route path="/timexyz" component={Timexyz}/>
-                                <Route path="/articleupdate/:id" component={ArticleComUpdate}/>
-                                <Route path="/userinfo" component={UserInfo}/>
-                                <Route path="/aritictype" component={Arititype}/>
-                            </Switch>
-                        </Content>
+                    <Content style={{margin: '24px 16px', padding: 24, background: '#fff', marginTop: 80}}>
+                        <Switch>
+                            <Route path="/calcan" component={Calcan}/>
+                            <Route path="/updatepwd" component={UpdatePwd}/>
+                            <Route path="/article" component={Article}/>
+                            <Route path="/articleadd" component={ArticleCom}/>
+                            <Route path="/timexyz" component={Timexyz}/>
+                            <Route path="/articleupdate/:id" component={ArticleComUpdate}/>
+                            <Route path="/userinfo" component={UserInfo}/>
+                            <Route path="/aritictype" component={Arititype}/>
+                            <Route path="/wzinfo" component={WzInfo}/>
+                        </Switch>
+                    </Content>
                 </Layout>
             </Layout>
         )

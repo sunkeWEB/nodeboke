@@ -49,8 +49,13 @@
     width: 80px;
     text-align: center;
 }
-.sk-body-left,.sk-body-right{
+.sk-body-left,.sk-body-right > div{
     background-color: white;
+    padding: 15px;
+}
+
+.sk-body-right > div:not(:first-child){
+    margin-top: 20px;
 }
 
 .sk-body-right{
@@ -63,10 +68,18 @@
     .sk-body-right {
         display: none;
     }
+    .sk-body {
+        margin-top: 62px;
+    }
+}
+@media (min-width: 961px) {
+    .sk-body {
+        margin-top: 80px;
+    }
 }
 
 .navitemsul{
-    flex-direction: row-reverse;
+    flex-direction: row;
     font-size: 14px;
     color: #90979c;
 }
@@ -87,4 +100,20 @@
     font-weight: 600;
     color: #2e3135;
     margin: 3px 0;
+}
+.bztjli {
+    padding:3px 0;
+    border-bottom: 1px solid rgba(178, 186, 194, 0.4);
+}
+.bztjli:last-child{
+   padding-bottom: 0;
+    border-bottom: none;
+}
+
+.huisecolor {
+    color: rgb(153,153,153);
+}
+
+.activenav{
+    border-bottom: 2px solid rgb(0, 127, 255);
 }

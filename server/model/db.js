@@ -137,6 +137,17 @@ const models = {
         ip: {
             type: String,
         }
+    },
+    wzxx:{
+        logo: String,
+        weixin: String,
+        qq: String,
+        wzbeiannum: String,
+        wzname: String,
+        showsk: {
+            type:Boolean,
+            default:true
+        }
     }
 };
 

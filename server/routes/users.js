@@ -96,6 +96,23 @@ router.post('/addxx',(req,res)=>{
     });
 });
 
+router.get('/getroot',(req,res)=>{  // 如果用户没有登录  获取博主的信息   如果登录显示登录的信息  /info
+    Users.findOne({user:'root'},(err,doc)=>{
+        if (err) {
+            res.json({
+                code:1,
+                msg:'系统错误'
+            });
+        }else{
+            res.json({
+                code:0,
+                msg:"success",
+                data:doc
+            });
+        }
+    });
+});
+
 function md5(value) {
     const k = "397633183_@LoveLsL..*()j+s+--mmm";
     value = value + k;

@@ -50,6 +50,14 @@
         width: 100%;
     }
 }
+
+@media screen and (min-width: 968px) {
+    .uploadGroup {
+        display: flex;
+        margin-left: 100px;
+    }
+}
+
 th,td{
     white-space:nowrap;
 }
@@ -81,4 +89,8 @@ th,td{
 .ant-layout-header{
     background: linear-gradient(to right,#001529 0,#00152990 100%) !important;
     color: #fff !important;
+}
+.clearfloat:after{
+    overflow: hidden;
+    clear: both;
 }
