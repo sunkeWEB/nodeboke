@@ -73,13 +73,17 @@ const models = {
         dianzan: [{
             dianzanname:String
         }],
-        comment: [{
-            cmmentname: {
+        commits: [{
+            commitsid: {
                 type: String
             },
-            commenttime: {
+            commitsttime: {
                 type: Number,
                 default:Date.now
+            },
+            commitscontext:{
+                type:String,
+                require:true
             }
         }]
     },
@@ -147,6 +151,32 @@ const models = {
         showsk: {
             type:Boolean,
             default:true
+        }
+    },
+    yonghu:{
+        name:{
+            type:String,
+            require:true
+        },
+        pwd:{
+            type:String,
+            require:true
+        },
+        createtime:{
+            type:Number,
+            default:Date.now
+        },
+        phone:{
+            type:String
+        },
+        mail:{
+            type:String
+        },
+        lastip:{
+            type:String
+        },
+        lasttime:{
+            type:Number
         }
     }
 };

@@ -6,14 +6,14 @@
     align-items: center;
 }
 
-.sk-header-item{
+.sk-header-item {
     max-width: 980px;
     width: 100%;
     margin: 0 auto;
     display: flex;
 }
 
-.sk-body{
+.sk-body {
     position: relative;
     margin: 0 auto;
     width: 100%;
@@ -22,6 +22,7 @@
     display: flex;
     align-items: flex-start;
 }
+
 .sk-body-left {
     overflow: hidden;
     -webkit-box-flex: 1;
@@ -29,8 +30,6 @@
     max-width: 900px;
     padding: 15px;
 }
-
-
 
 .logo {
     width: 50px;
@@ -40,7 +39,7 @@
     margin-left: 15px;
 }
 
-.menuitem{
+.menuitem {
     display: flex;
     align-items: center;
 }
@@ -49,36 +48,55 @@
     width: 80px;
     text-align: center;
 }
-.sk-body-left,.sk-body-right > div{
+
+.sk-body-left, .sk-body-right > div {
     background-color: white;
     padding: 15px;
 }
 
-.sk-body-right > div:not(:first-child){
+.sk-body-right > div:not(:first-child) {
     margin-top: 20px;
 }
 
-.sk-body-right{
+.sk-body-right {
     width: 240px;
     min-width: 240px;
     margin-left: 20px;
 }
-
+#commit-body {
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    padding: 20px
+}
 @media (max-width: 960px) {
     .sk-body-right {
         display: none;
     }
+
     .sk-body {
         margin-top: 62px;
     }
+
+    .commitul {
+        display: none;
+    }
+
+    #commit-body {
+        padding: 5px;
+    }
+    .commit-body-avatar img {
+        margin-left: 0 !important;
+    }
 }
+
+
 @media (min-width: 961px) {
     .sk-body {
         margin-top: 80px;
     }
 }
 
-.navitemsul{
+.navitemsul {
     flex-direction: row;
     font-size: 14px;
     color: #90979c;
@@ -89,31 +107,61 @@
     font-size: 12px;
     position: relative;
 }
-.header > span:not(:last-child):after{
+
+.header > span:not(:last-child):after {
     content: ' . ';
     margin-bottom: 6px;
     color: #b2bac2;
 }
 
-.list-body{
+.list-body {
     font-size: 20px;
     font-weight: 600;
     color: #2e3135;
     margin: 3px 0;
 }
+
 .bztjli {
-    padding:3px 0;
+    padding: 3px 0;
     border-bottom: 1px solid rgba(178, 186, 194, 0.4);
 }
-.bztjli:last-child{
-   padding-bottom: 0;
+
+.bztjli:last-child {
+    padding-bottom: 0;
     border-bottom: none;
 }
 
 .huisecolor {
-    color: rgb(153,153,153);
+    color: rgb(153, 153, 153);
 }
 
-.activenav{
+.activenav {
     border-bottom: 2px solid rgb(0, 127, 255);
+}
+
+.commitul > ul {
+    text-align: center;
+    width: 40px;
+    height: 180px;
+    border-radius: 50%;
+}
+
+.commitul li {
+    height: 40px;
+    margin-bottom: 5px;
+    /*padding: 5px;*/
+    border-radius: 50%;
+    background-color: white;
+}
+
+.commitul li i {
+    line-height: 1.8;
+}
+
+.commit-pl-lists:not(:last-child) {
+    border-bottom:1px solid #f5f5f5;
+}
+
+.commitsttime:before{
+    content: "  ";
 }

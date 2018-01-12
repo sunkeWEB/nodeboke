@@ -18,6 +18,9 @@ class Navmenu extends React.Component {
 
     render() {
         const active = this.props.selectmenu;
+        const colortext = {
+            color: "#90979c"
+        };
         return (
             <div style={{display: 'flex', borderBottom: '1px solid rgba(178,186,194,.4)'}}>
                 <div style={{width: 100}}>文章列表</div>
@@ -26,7 +29,7 @@ class Navmenu extends React.Component {
                         {this.props.menudatas.map(v => (
                             <li className={active === v.name ? 'activenav' : ''} key={v.js} style={{marginRight: 20}}
                                 onClick={(e) => this.handleRoute(v.name, e)}>
-                                <a href="javascript:void(0)" style={{textDecoration:'none'}}>{v.name}</a>
+                                <a  href="javascript:void(0)" style={{textDecoration:'none',}}>{v.name}</a>
                             </li>
                         ))}
                     </ul>

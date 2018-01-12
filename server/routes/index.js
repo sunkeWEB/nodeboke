@@ -125,7 +125,6 @@ router.get('/infoAritic2', (req, res) => {
     })
 });
 
-
 // 删除
 router.post('/delArtics', (req, res) => {
     const ariticId = req.body.ariticId;
@@ -374,67 +373,139 @@ router.get('/tjlist', (req, res) => {
     Articles.find({dtype, sort: true}, (err, doc) => {
         if (err) {
             res.json({
-                code:1,
-                msg:"获取失败"
+                code: 1,
+                msg: "获取失败"
             });
-        }else {
+        } else {
             res.json({
-                code:0,
-                msg:'success',
-                data:doc
+                code: 0,
+                msg: 'success',
+                data: doc
             });
         }
     })
 });
 
 // 添加修改网站信息
-router.post('/wzxx',(req,res)=>{
-    const {id,qq,weixin,logo,wzbeiannum,wzname,showsk} = req.body;
-    if (id===undefined) {  //表示新建无id的时候
-        Wzxx.create({qq,weixin,logo,wzbeiannum,wzname,showsk},(err,doc)=>{
+router.post('/wzxx', (req, res) => {
+    const {id, qq, weixin, logo, wzbeiannum, wzname, showsk} = req.body;
+    if (id === undefined) {  //表示新建无id的时候
+        Wzxx.create({qq, weixin, logo, wzbeiannum, wzname, showsk}, (err, doc) => {
             if (err) {
                 res.json({
-                    code:1,
-                    msg:'添加失败'
+                    code: 1,
+                    msg: '添加失败'
                 });
-            }else{
+            } else {
                 res.json({
-                    code:0,
-                    msg:"success",
-                    data:doc
+                    code: 0,
+                    msg: "success",
+                    data: doc
                 });
             }
         });
-    }else{
-        Wzxx.findByIdAndUpdate(id,{qq,weixin,logo,wzbeiannum,wzname,showsk},(err,doc)=>{
+    } else {
+        Wzxx.findByIdAndUpdate(id, {qq, weixin, logo, wzbeiannum, wzname, showsk}, (err, doc) => {
             if (err) {
                 res.json({
-                    code:1,
-                    msg:'修改'
+                    code: 1,
+                    msg: '修改'
                 });
-            }else{
+            } else {
                 res.json({
-                    code:0,
-                    msg:"success1",
-                    data:doc
+                    code: 0,
+                    msg: "success1",
+                    data: doc
                 });
             }
         });
     }
 });
 
-router.get('/getwzxx',(req,res)=>{
+router.get('/getwzxx', (req, res) => {
     Wzxx.find({}, (err, doc) => {
         if (err) {
             res.json({
+                code: 1,
+                msg: "获取数据失败",
+                err_msg: err
+            });
+        } else {
+            res.json({
+                code: 0,
+                msg: "success",
+                data: doc
+            });
+        }
+    });
+});
+
+
+router.get('/infoAritic3', (req, res) => {
+    let id = req.query.id;
+    let findtj = {};
+    if (id) {
+        findtj['_id'] = id;
+    }
+    Articles.findOne(findtj, {__v: 0}, (err, doc) => {
+        if (err) {
+            res.json({
+                code: 1,
+                msg: 'error',
+                data: err
+            });
+        } else {
+            res.json({
+                code: 0,
+                msg: 'success',
+                data: doc
+            });
+        }
+    });
+});
+
+// 评论入库
+router.post('/pjrk', (req, res) => {
+    const {userids} = req.cookies;
+    const {e, id} = req.body;
+    Articles.update({_id: id}, {
+        $addToSet: {
+            commits: {
+                commitsid: userids,
+                commitscontext: e
+            }
+        }
+    },(err,doc)=>{
+        if (err) {
+            res.json({
                 code:1,
-                msg:"获取数据失败",
+                msg:'失败',
+                err_msg:err
+            });
+        }else{
+            res.json({
+                code: 0,
+                msg: "添加成功",
+                data: doc
+            });
+        }
+    })
+});
+
+// 用来读取评论的
+router.get('/getariticpj', (req, res) => {
+    const {id} = req.query;
+    Articles.findOne({_id:id},null,{sort: {'commitsttime': 1}},(err,doc)=>{
+        if (err) {
+            res.json({
+                code:1,
+                msg:'读取失败',
                 err_msg:err
             });
         }else{
             res.json({
                 code:0,
-                msg:"success",
+                msg:'success',
                 data:doc
             });
         }
