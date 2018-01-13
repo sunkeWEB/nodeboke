@@ -1,13 +1,15 @@
 import React from 'react';
-import Logo from './logo.jpg';
-import Logo1 from './logo.jpg';
 import axios from 'axios';
 import {withRouter} from 'react-router-dom';
 import Login from './../login/login';
 import Register from './../register/register';
-import {Menu, Dropdown, Button,Icon} from 'antd';
+import {Menu, Dropdown, Icon} from 'antd';
+import browserCookies from 'browser-cookies';
+import {connect} from 'react-redux';
+import {Logout} from './../../reducer/user.redux';
 
 @withRouter
+@connect(state => state.users, {Logout})
 class Headers extends React.Component {
     constructor(props) {
         super(props);
@@ -15,7 +17,8 @@ class Headers extends React.Component {
             logo: '',
             showLoginModel: false,
             showRegisterModel: false,
-            islogin: false
+            islogin: false,
+            useravatar: ''
         }
     }
 
@@ -64,6 +67,11 @@ class Headers extends React.Component {
         this.showCalanModel();
     }
 
+    logout() {
+        browserCookies.erase('userids');
+        this.props.Logout();
+    }
+
     render() {
         const routers = [
             {
@@ -78,18 +86,17 @@ class Headers extends React.Component {
         const menu = (
             <Menu>
                 <Menu.Item>
-                    <a target="_blank" rel="noopener noreferrer" href="http://www.taobao.com/"><Icon type="setting" /> 设置</a>
+                    <Icon type="setting"/><span onClick={()=>this.props.history.push('/setting')}>设置</span>
                 </Menu.Item>
                 <Menu.Item>
-                    <a target="_blank" rel="noopener noreferrer" href="http://www.tmall.com/"><Icon type="logout" /> 登出</a>
+                    <Icon type="logout"/> <span onClick={() => this.logout()}>登出</span>
                 </Menu.Item>
             </Menu>
         );
         return (
             <div className="sk-header" style={{position: 'fixed', top: 0, zIndex: 1, width: '100%'}}>
                 <div className="sk-header-item">
-                    {this.state.logo ? <img src={"/" + this.state.logo} alt="" className="logo"/> :
-                        <img src={Logo} alt="" className="logo"/>}
+                    <img src={"/" + this.state.logo} alt="" className="logo"/>
                     <ul className="menuitem" style={{marginBottom: 0}}>
                         {routers.map(v => {
                             return (
@@ -99,7 +106,8 @@ class Headers extends React.Component {
                                     </a>
                                 </li>
                             )
-                        })}
+                        })
+                        }
                     </ul>
 
 
@@ -111,19 +119,19 @@ class Headers extends React.Component {
                         alignItems: 'center',
                         flexDirection: 'row-reverse'
                     }}>
-                        {this.state.islogin ? (<div>
-                                <li style={{marginRight: 15, color: '#007fff', fontSize: 16}}>
-                                    <a href="javascript:void(0)" style={{textDecoration: 'none'}}
-                                       onClick={() => this.showCalanModelregister()}>注册</a>
-                                </li>
+                        {!this.props.isAuth ? (<div style={{display: 'flex'}}>
                                 <li style={{marginRight: 15, color: '#007fff', fontSize: 16}}>
                                     <a href="javascript:void(0)" style={{textDecoration: 'none'}}
                                        onClick={() => this.showCalanModel()}>登录</a>
                                 </li>
+                                <li style={{marginRight: 15, color: '#007fff', fontSize: 16}}>
+                                    <a href="javascript:void(0)" style={{textDecoration: 'none'}}
+                                       onClick={() => this.showCalanModelregister()}>注册</a>
+                                </li>
                             </div>) :
                             <Dropdown overlay={menu} placement="bottomRight">
                                 <img style={{width: 40, height: 40, borderRadius: '50%'}}
-                                     src={Logo1} alt=""/>
+                                     src={'/' + this.props.avatar} alt=""/>
                             </Dropdown>}
                     </ul>
                     <div>

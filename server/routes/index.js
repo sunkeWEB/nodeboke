@@ -2,12 +2,26 @@ const express = require('express');
 const router = express.Router();
 const multer = require('multer');
 const fs = require('fs');
-const model = require('./../model/db');
-const Articles = model.getModel('articles');
-const Timexzs = model.getModel('timexz');
-const Calcan = model.getModel('calcan');
-const Dtype = model.getModel('dtype');
-const Wzxx = model.getModel('wzxx');
+// const model = require('./../model/db');
+
+const Articles = require('./../model/db').Articles;
+const Calcan = require('./../model/db').Calcan;
+const Timexzs = require('./../model/db').Timexzs;
+const Dtype = require('./../model/db').Dtype;
+const Wzxx = require('./../model/db').Wzxx;
+const Post = require('./../model/db').Post;
+
+router.get('/css', (req, res) => {
+    let post = new Post({name:'sunke1'});
+    post.save((err,doc)=>{
+        res.json({
+            code:0,
+            data:doc
+        });
+    });
+});
+
+
 /* GET home page. */
 router.get('/', function (req, res, next) {
     res.json({title: 'Express123'});
@@ -447,7 +461,7 @@ router.get('/infoAritic3', (req, res) => {
     if (id) {
         findtj['_id'] = id;
     }
-    Articles.findOne(findtj, {__v: 0}, (err, doc) => {
+    Articles.findOne(findtj, {__v: 0,commits:0}, (err, doc) => {
         if (err) {
             res.json({
                 code: 1,
@@ -495,21 +509,20 @@ router.post('/pjrk', (req, res) => {
 // 用来读取评论的
 router.get('/getariticpj', (req, res) => {
     const {id} = req.query;
-    Articles.findOne({_id:id},null,{sort: {'commitsttime': 1}},(err,doc)=>{
-        if (err) {
-            res.json({
-                code:1,
-                msg:'读取失败',
-                err_msg:err
-            });
-        }else{
-            res.json({
-                code:0,
-                msg:'success',
-                data:doc
-            });
-        }
-    });
+    Articles.findOne({_id:id}).populate('commits.commitsid','-_id -__v -pwd').exec((err,doc)=>{
+        res.json({
+            code:0,
+            data:doc.commits
+        });
+    })
+});
+
+router.get('/cs', (req, res) => {
+  Articles.find({_id:'5a597f89464b020e48e2b316'}).populate({path:'commitname',select:'name'}).exec((err,doc)=>{
+      res.json({
+          data:doc
+      });
+  })
 });
 
 module.exports = router;

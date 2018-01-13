@@ -1,9 +1,12 @@
 const express = require('express');
 const utility = require('utility');
 const router = express.Router();
-const model = require('./../model/db');
-const Users = model.getModel('users');
-const Yonghu = model.getModel('yonghu');
+
+const Users = require('./../model/db').Users;
+const Yonghu = require('./../model/db').Yonghu;
+// const model = require('./../model/db');
+// const Users = model.getModel('users');
+// const Yonghu = model.getModel('yonghu');
 /* GET users listing. */
 router.get('/', function (req, res, next) {
     res.send('respond with a resource');

@@ -22,7 +22,7 @@ class Register extends React.Component {
         }else if (data.emailphone === '') {
             message.warning("电话或邮箱不能为空");
             return false;
-        }else if (data.pwd) {
+        }else if (data.pwd=== '') {
             message.warning("密码不能为空");
             return false;
         }

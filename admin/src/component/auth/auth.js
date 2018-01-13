@@ -3,7 +3,6 @@ import axios from 'axios';
 import {withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {loadDate} from './../../reducer/user.redux';
-import
 @withRouter
 @connect(null, {loadDate})
 class AuthRoute extends React.Component {

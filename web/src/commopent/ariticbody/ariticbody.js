@@ -4,7 +4,7 @@ import {message, Icon} from 'antd';
 import BackTops from './../backtop/backtop';
 import ComCommit from './../commit/commit';
 import './../../index.css';
-import Logo from './logo.jpg';
+import DefaultAvatar from './defaultavatar.png';
 import {befoderDay} from './../../utili';
 
 class AriticBody extends React.Component {
@@ -27,9 +27,9 @@ class AriticBody extends React.Component {
             if (res.status === 200 && res.data.code === 0) {
                 this.setState({
                     wenzantitle: res.data.data.title,
-                    wenzanbody: res.data.data.body,
-                    wenzanpl: res.data.data.commits
+                    wenzanbody: res.data.data.body
                 });
+                this.loadPingl();
             } else {
                 message.warning(res.data.msg);
             }
@@ -52,7 +52,7 @@ class AriticBody extends React.Component {
         axios.get('/getariticpj', {params: {id: id}}).then(res1 => {
             if (res1.status === 200 && res1.data.code === 0) {
                 this.setState({
-                    wenzanpl: res1.data.data[0].commits
+                    wenzanpl: res1.data.data
                 });
             } else {
                 message.warning(res1.data.msg)
@@ -90,13 +90,13 @@ class AriticBody extends React.Component {
                                         key={v.commitscontext + Math.random()}>
                                         {/*{v.commitscontext}*/}
                                         <div className="commit-pl-left">
-                                            <img src={Logo}
+                                            <img src={"/"+v.commitsid.avatar}
                                                  style={{width: 40, height: 40, borderRadius: '50%', marginRight: 10}}
                                                  alt=""/>
                                         </div>
                                         <div className="commit-pl-left">
                                             <div className="commit-pl-name">
-                                                <span>root1</span>
+                                                <span>{v.commitsid.name}</span>
                                                 <span className="commitsttime">{befoderDay(v.commitsttime)}</span>
                                             </div>
                                             <div>{v.commitscontext}</div>

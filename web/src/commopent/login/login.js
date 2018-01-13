@@ -33,8 +33,9 @@ class Login extends React.Component {
         }
         axios.post('/users/loginuser', {name, pwd}).then(res => {
             if (res.status === 200 && res.data.code === 0) {
-                const {name,phone} = res.data.data;
-                this.props.LoadDate({name,phone});
+                const {name,phone,avatar} = res.data.data;
+                this.props.loginsuccess();
+                this.props.LoadDate({name,phone,avatar});
             } else {
                 message.warn(res.data.msg);
             }
