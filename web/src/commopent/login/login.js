@@ -84,7 +84,7 @@ class Login extends React.Component {
                         onCancel={() => this.handleCancel()}
                         footer={null}
                         width={350}
-                        style={{top: '15rem'}}
+                        style={{top: '10rem'}}
                     >
                         <div style={{position: 'absolute', top: this.state.top, left: 95}}>
                             <img style={{width: 150}} src={this.state.showimg} alt=""/>

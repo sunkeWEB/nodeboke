@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
-
+import {withRouter} from 'react-router-dom';
+@withRouter
 class CommontMax extends React.Component {
     constructor(props) {
         super(props);
@@ -27,6 +28,10 @@ class CommontMax extends React.Component {
         },0)
     }
 
+    handleClick (e) {
+        this.props.history.push(`/wenzan/${e}`);
+    }
+
     render() {
         return (
             <div style={{marginTop: 15}}>
@@ -34,7 +39,8 @@ class CommontMax extends React.Component {
                 {this.state.data.length>0? (
                         <ul>
                             {this.state.data.map(v => {
-                                return <li className="bztjli" key={v.title}>{v.title}</li>
+                                // rgba(178, 186, 194, 0.4)
+                                return <li onClick={()=>this.handleClick(v._id)} className="bztjli" key={v.title}><a style={{color:'rgba(0, 0, 0, 0.65)'}}>{v.title}</a></li>
                             })}
                         </ul>
                 ):"博主正在抓紧收集中..."}

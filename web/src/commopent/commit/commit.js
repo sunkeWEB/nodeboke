@@ -2,7 +2,7 @@ import React from 'react';
 import {Input, Button, message} from 'antd';
 import DefaultAvatar from './defaultavatar.png';
 import {connect} from 'react-redux';
-
+import { Emoji } from 'emoji-mart'
 const {TextArea} = Input;
 message.config({
     top: 60,
@@ -46,7 +46,7 @@ class ComCommit extends React.Component {
                 </div>
                 <div className="commit-body-input" style={{display: 'flex'}}>
                     <div className="commit-body-avatar">
-                        <img src={DefaultAvatar} style={{width: 40, height: 40, borderRadius: '50%', margin: '0 15px'}}
+                        <img src={this.props.avatar? '/'+this.props.avatar :DefaultAvatar} style={{width: 40, height: 40, borderRadius: '50%', margin: '0 15px'}}
                              alt=""/>
                     </div>
                     <div style={{flex: 1}}>

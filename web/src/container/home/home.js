@@ -18,14 +18,16 @@ class Home extends React.Component {
         let index = this.props.location.pathname.lastIndexOf('/');
         let url = this.props.location.pathname;
         let path = url.substr(index+1,url.length);  // 这里的三步是当页面刷新的时候
-        if (path==='css') {
-            path = 'html/css';
-        }
         axios.get('/getDtype').then(res => {
             if (res.data.code===0 && res.status===200) {
                 this.setState({
                     menudata:res.data.data,
                     namenav:path
+                });
+                // console.log(res.data.data[0].name);
+                this.props.history.push(`/article/${res.data.data[0].name}`);
+                this.setState({
+                    namenav:res.data.data[0].name
                 });
             }else {
                 message.warning("获取菜单失败");

@@ -61,7 +61,6 @@ class Register extends React.Component {
                         onCancel={() => this.handleCancel()}
                         footer={null}
                         width={350}
-                        style={{top: '15rem'}}
                     >
                         <Input placeholder="请输入用户名" style={{marginBottom: 12}}
                                onChange={(e) => this.handleInput('name', e.target.value)}/>

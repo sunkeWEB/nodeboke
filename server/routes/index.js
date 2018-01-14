@@ -403,7 +403,7 @@ router.get('/tjlist', (req, res) => {
 // 添加修改网站信息
 router.post('/wzxx', (req, res) => {
     const {id, qq, weixin, logo, wzbeiannum, wzname, showsk} = req.body;
-    if (id === undefined) {  //表示新建无id的时候
+    if (id === '') {  //表示新建无id的时候
         Wzxx.create({qq, weixin, logo, wzbeiannum, wzname, showsk}, (err, doc) => {
             if (err) {
                 res.json({
@@ -523,6 +523,73 @@ router.get('/cs', (req, res) => {
           data:doc
       });
   })
+});
+
+// dianzan
+
+router.post('/dianzan',(req,res)=>{
+    const {userids} = req.cookies;
+    const {e} = req.body;
+    Articles.find({$and: [{'dianzan.dianzanid': userids},{_id:e}]},(err,doc)=>{
+        if (doc.length===0) {  // 没有 就添加
+            Articles.update({_id:e},{$addToSet: {
+                    dianzan: {
+                        dianzanid: userids
+                    }
+                }},(err,doc)=>{
+                if (err) {
+                    res.json({
+                        code:1,
+                        msg:'失败',
+                        err_msg:err
+                    });
+                }else{
+                    res.json({
+                        code: 0,
+                        type:0,
+                        msg: "点赞成功",
+                        data: doc
+                    });
+                }
+            })
+        }else {  // 取消
+            Articles.update({_id:e}, {$pull: {dianzan: {dianzanid: userids}}}, (err1, doc1) => {
+                if (err1) {
+                    return res.json({
+                        code: 1,
+                        msg: "系统错误",
+                        data: err1
+                    });
+                } else {
+                    return res.json({
+                        code: 0,
+                        type:-1,
+                        msg: "取消成功",
+                        data: doc1
+                    });
+                }
+            })
+        }
+    })
+});
+
+// 获取时间轴
+router.get('/gettimexz',(req,res)=>{
+    Timexzs.find({},{_id:0,__v:0},(err,doc)=>{
+        if (err) {
+            res.json({
+                code:1,
+                msg:'系统获取失败',
+                err_msg:err
+            });
+        }else {
+            res.json({
+                code:0,
+                msg:'success',
+                data:doc
+            });
+        }
+    });
 });
 
 module.exports = router;

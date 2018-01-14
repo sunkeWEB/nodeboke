@@ -207,6 +207,54 @@ router.get('/info1', (req, res) => {
     });
 });
 
+router.post('/updateuser',(req,res)=>{
+    const {userids} = req.cookies;
+    const {useravatar, name} = req.body;
+    Yonghu.findByIdAndUpdate(userids,{avatar:useravatar,name},(err,doc)=>{
+        if (err) {
+            res.json({
+                code:1,
+                msg:"系统错误",
+                err_msg:err
+            });
+        }else{
+            res.json({
+                code:0,
+                msg:"success",
+                data:doc
+            });
+        }
+    })
+});
+
+router.post('/updateuserpwd',(req,res)=>{
+    const {userids} = req.cookies;
+    const {oldpwd, newpwd} = req.body;
+    Yonghu.findOne({_id: userids}, (err1, doc) => {
+        if (doc.pwd === md5(oldpwd)) {
+            Yonghu.findByIdAndUpdate(userids, {pwd: md5(newpwd)}, (err2, doc) => {
+                if (doc) {
+                    res.json({
+                        code: 0,
+                        msg: "修改密码成功"
+                    });
+                } else {
+                    res.json({
+                        code: 1,
+                        msg: "修改密码失败" + err2
+                    });
+                }
+            });
+        } else {
+            return res.json({
+                code: 1,
+                msg: "原密码错误",
+                data: []
+            });
+        }
+    });
+});
+
 function md5(value) {
     const k = "397633183_@LoveLsL..*()j+s+--mmm";
     value = value + k;

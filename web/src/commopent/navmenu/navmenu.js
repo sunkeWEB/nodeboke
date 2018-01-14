@@ -7,13 +7,18 @@ class Navmenu extends React.Component {
         super(props);
         this.state = {
             data: [],
-            selectli: true
+            selectli: true,
+            selectnav:'/'
         };
     }
 
     handleRoute(e) {
         this.props.handleClick(e);
         this.props.history.push(`/article/${e}`);
+    }
+
+    componentWillMount () {
+
     }
 
     render() {
@@ -27,9 +32,9 @@ class Navmenu extends React.Component {
                 <div style={{flex: 1, textAlign: 'right'}}>
                     <ul style={{display: 'flex'}} className="navitemsul">
                         {this.props.menudatas.map(v => (
-                            <li className={active === v.name ? 'activenav' : ''} key={v.js} style={{marginRight: 20}}
+                            <li className={active === v.name ? 'activenav' : null} key={v.js} style={{marginRight: 20}}
                                 onClick={(e) => this.handleRoute(v.name, e)}>
-                                <a  href="javascript:void(0)" style={{textDecoration:'none',}}>{v.name}</a>
+                                <a  href="javascript:void(0)" className={active === v.name ? 'activenavcolor' : 'noactivenavcolor'} style={{textDecoration:'none',}}>{v.name}</a>
                             </li>
                         ))}
                     </ul>

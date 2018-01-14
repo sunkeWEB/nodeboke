@@ -74,7 +74,7 @@ class Article extends React.Component {
                 dataIndex: "comment",
                 width:'80px',
                 render:(value)=>{
-                    return value.length
+                    return 1
                 }
             },
             {

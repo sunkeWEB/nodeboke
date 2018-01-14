@@ -81,12 +81,16 @@ class Headers extends React.Component {
             {
                 name: '资源',
                 path: '/ziyuan'
+            },
+            {
+                name: '我们',
+                path: '/timexz'
             }
         ];
         const menu = (
             <Menu>
                 <Menu.Item>
-                    <Icon type="setting"/><span onClick={()=>this.props.history.push('/setting')}>设置</span>
+                    <Icon type="setting"/> <span onClick={()=>this.props.history.push('/setting')}>设置</span>
                 </Menu.Item>
                 <Menu.Item>
                     <Icon type="logout"/> <span onClick={() => this.logout()}>登出</span>
@@ -101,7 +105,7 @@ class Headers extends React.Component {
                         {routers.map(v => {
                             return (
                                 <li key={v.name} onClick={() => this.handlerouter(v.path)}>
-                                    <a href="javascript:void(0)" style={{textDecoration: 'none'}}>
+                                    <a  href="javascript:void(0)" style={{textDecoration: 'none',color:'#71777c'}}>
                                         {v.name}
                                     </a>
                                 </li>
@@ -130,7 +134,7 @@ class Headers extends React.Component {
                                 </li>
                             </div>) :
                             <Dropdown overlay={menu} placement="bottomRight">
-                                <img style={{width: 40, height: 40, borderRadius: '50%'}}
+                                <img style={{width: 40, height: 40, borderRadius: '50%',marginRight:10}}
                                      src={'/' + this.props.avatar} alt=""/>
                             </Dropdown>}
                     </ul>
