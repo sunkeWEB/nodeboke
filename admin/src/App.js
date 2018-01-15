@@ -13,6 +13,7 @@ import Timexyz from './component/timexyz/timexyz';
 import UserInfo from './component/userinfo/userinfo';
 import Calcan from './component/calcan/calcan';
 import WzInfo from './component/wzinfo/wzinfo';
+import UserGl from './container/usergl/usergl';
 
 const {Header, Sider, Content} = Layout;
 const SubMenu = Menu.SubMenu;
@@ -92,6 +93,10 @@ class App extends Component {
                             <Icon type="area-chart"/>
                             <span>跑马灯</span>
                         </Menu.Item>
+                        <Menu.Item key="/usergl">
+                            <Icon type="area-chart"/>
+                            <span>用户管理</span>
+                        </Menu.Item>
                         <Menu.Item key="/aritictype">
                             <Icon type="schedule"/>
                             <span>文章类型管理</span>
@@ -139,6 +144,7 @@ class App extends Component {
                             <Route path="/calcan" component={Calcan}/>
                             <Route path="/updatepwd" component={UpdatePwd}/>
                             <Route path="/article" component={Article}/>
+                            <Route path="/usergl" component={UserGl}/>
                             <Route path="/articleadd" component={ArticleCom}/>
                             <Route path="/timexyz" component={Timexyz}/>
                             <Route path="/articleupdate/:id" component={ArticleComUpdate}/>

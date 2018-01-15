@@ -6,6 +6,7 @@ import CommontMax from './../../commopent/commontmax/commontmax';
 import XtSetting from './../../commopent/xtsetting/xtsetting';
 import {message} from 'antd';
 import axios from 'axios';
+
 class Home extends React.Component {
     constructor(props) {
         super(props);

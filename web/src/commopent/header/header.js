@@ -18,11 +18,13 @@ class Headers extends React.Component {
             showLoginModel: false,
             showRegisterModel: false,
             islogin: false,
-            useravatar: ''
+            useravatar: '',
+            isselect:'/'  // 默认选择首页
         }
     }
 
     componentWillMount() {
+        console.log("asa");
         axios.get('/getwzxx').then(res => {
             if (res.status === 200 && res.data.code === 0) {
                 const data = res.data.data[0];
@@ -34,6 +36,9 @@ class Headers extends React.Component {
     }
 
     handlerouter(e) {
+        this.setState({
+            isselect:e
+        });
         this.props.history.push(e);
     }
 
@@ -78,10 +83,10 @@ class Headers extends React.Component {
                 name: '首页',
                 path: '/'
             },
-            {
-                name: '资源',
-                path: '/ziyuan'
-            },
+            // {
+            //     name: '资源',
+            //     path: '/ziyuan'
+            // },
             {
                 name: '我们',
                 path: '/timexz'
@@ -105,7 +110,7 @@ class Headers extends React.Component {
                         {routers.map(v => {
                             return (
                                 <li key={v.name} onClick={() => this.handlerouter(v.path)}>
-                                    <a  href="javascript:void(0)" style={{textDecoration: 'none',color:'#71777c'}}>
+                                    <a className={this.state.isselect===v.path ? 'seleceheader':''}  href="javascript:void(0)" style={{textDecoration: 'none',color:'#71777c'}}>
                                         {v.name}
                                     </a>
                                 </li>

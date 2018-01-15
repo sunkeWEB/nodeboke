@@ -255,6 +255,26 @@ router.post('/updateuserpwd',(req,res)=>{
     });
 });
 
+
+// 获取所用的用户
+router.get('/getuserslist',(req,res)=>{
+    Yonghu.find({},{_id:0,pwd:0,__v:0,avatar:0},(err,doc)=>{
+        if (err) {
+            res.json({
+                code:1,
+                msg:'系统错误',
+                err_msg:err
+            });
+        }else{
+            res.json({
+                code:0,
+                msg:'success',
+                data:doc
+            });
+        }
+    });
+});
+
 function md5(value) {
     const k = "397633183_@LoveLsL..*()j+s+--mmm";
     value = value + k;

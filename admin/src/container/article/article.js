@@ -6,7 +6,6 @@ import QueueAnim from 'rc-queue-anim';
 message.config({
     top: 70
 });
-
 class Article extends React.Component {
     constructor(props) {
         super(props);
@@ -14,7 +13,8 @@ class Article extends React.Component {
             loading: true,
             pagination: true,
             data: [],
-            editId:''
+            editId:'',
+            dtype:[]
         };
     }
 
@@ -27,6 +27,17 @@ class Article extends React.Component {
             if (res.status !== 200 || res.data.code !== 0) {
                 message.warning("数据获取失败");
             }
+            axios.get('/getDtype').then(res => {
+                if (res.status === 200 && res.data.code === 0) {
+                    let dtypes = [];   // 获取文章类型   以后可以做文章筛选显示
+                    res.data.data.map(v => {
+                        dtypes.push({text:v.name,value:v.name});
+                    });
+                    this.setState({
+                        dtype: dtypes
+                    });
+                }
+            });
             this.setState({
                 data: res.data.data,
                 loading: false
@@ -59,28 +70,33 @@ class Article extends React.Component {
             {
                 title: '类型',
                 dataIndex: "dtype",
-                width: '80px'
+                width: '80px',
+                filters:this.state.dtype,
+                onFilter: (value, record) => record.dtype.indexOf(value) === 0,
             },
             {
                 title:"点赞数",
                 dataIndex: "dianzan",
                 width:'80px',
+                sorter: (a, b) => a.dianzan.length - b.dianzan.length,
                 render:(value)=>{
                     return value.length
                 }
             },
             {
                 title:"评论数",
-                dataIndex: "comment",
+                dataIndex: "commits",
                 width:'80px',
+                sorter: (a, b) => a.commits.length - b.commits.length,
                 render:(value)=>{
-                    return 1
+                    return value.length
                 }
             },
             {
                 title: '添加时间',
                 dataIndex: 'time',
                 width: '80px',
+                sorter: (a, b) => a.time - b.time,
                 render:(value) => {
                     return formatDate(value);
                 }
