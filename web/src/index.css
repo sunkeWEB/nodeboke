@@ -189,3 +189,9 @@
 .seleceheader{
     color: #00B7FF !important;
 }
+.xgwz:not(:last-child){
+    border-bottom:1px solid #ccc;
+}
+.xgwz{
+    padding:5px 10px;
+}

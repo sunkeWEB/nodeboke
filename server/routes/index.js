@@ -469,10 +469,21 @@ router.get('/infoAritic3', (req, res) => {
                 data: err
             });
         } else {
-            res.json({
-                code: 0,
-                msg: 'success',
-                data: doc
+            Articles.find({dtype: doc.dtype}).limit(6).exec((err1, doc1) => {
+                if (err1) {
+                    res.json({
+                        code: 1,
+                        msg: 'error',
+                        data: err1
+                    });
+                }else{
+                    res.json({
+                        code: 0,
+                        msg: 'success',
+                        data: doc,
+                        xgdata:doc1
+                    });
+                }
             });
         }
     });
@@ -509,7 +520,14 @@ router.post('/pjrk', (req, res) => {
 // 用来读取评论的
 router.get('/getariticpj', (req, res) => {
     const {id} = req.query;
-    Articles.findOne({_id:id}).populate('commits.commitsid','-_id -__v -pwd').exec((err,doc)=>{
+    // {
+    //     path: 'fans',
+    //         match: { age: { $gte: 21 }},
+    //     // Explicitly exclude `_id`, see http://bit.ly/2aEfTdB
+    //     select: 'name -_id',
+    //         options: { limit: 5 }
+    // }
+    Articles.findOne({_id:id}).populate({path:'commits.commitsid',select:'-_id -__v -pwd'}).exec((err,doc)=>{
         res.json({
             code:0,
             data:doc.commits

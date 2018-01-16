@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import {message, Icon,Button} from 'antd';
+import {message, Icon, Button} from 'antd';
 import BackTops from './../backtop/backtop';
 import ComCommit from './../commit/commit';
 import './../../index.css';
@@ -8,8 +8,9 @@ import Cookies from 'js-cookie';
 import {befoderDay} from './../../utili';
 import {withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
+import Carousels from './../../commopent/Carousels/carousel';
 @withRouter
- @connect(state=>state.users,{})
+@connect(state => state.users, {})
 class AriticBody extends React.Component {
     constructor(props) {
         super(props);
@@ -17,7 +18,10 @@ class AriticBody extends React.Component {
             wenzantitle: '',
             wenzanbody: '',
             wenzanpl: [],
-            dianzanlist: false
+            xgdata: [],
+            dianzanlist: false,
+            kk:1,
+            calcans:[]
         };
     }
 
@@ -29,7 +33,6 @@ class AriticBody extends React.Component {
         } else {
             ids = userid.substr(3, userid.length - 4);
         }
-
         const id = this.props.match.params.id;
         axios.get('/infoAritic3', {
             params: {
@@ -44,15 +47,24 @@ class AriticBody extends React.Component {
                         });
                     }
                 });
+                let xgdata = res.data.xgdata.filter((v) => id !== v._id);
                 this.setState({
                     wenzantitle: res.data.data.title,
-                    wenzanbody: res.data.data.body
+                    wenzanbody: res.data.data.body,
+                    xgdata: xgdata
                 });
+
                 this.loadPingl();
             } else {
                 message.warning(res.data.msg);
             }
         });
+        axios.get('/getCalcan').then(res=>{
+            this.setState({
+                calcans:res.data.data
+            });
+        });
+
     }
 
     dianzan(e, key, index) {
@@ -62,20 +74,13 @@ class AriticBody extends React.Component {
             return false;
         }
         axios.post('/dianzan', {e}).then(res => {
-
-            // if (res.data.type === 0) {
-            //     this.refs[key].innerText = parseInt(this.refs[key].innerText) + 1;
-            // } else if (res.data.type === -1) {
-            //     this.refs[key].innerText = parseInt(this.refs[key].innerText) - 1;
-            // }
-
-            if (res.data.type === -1 ) {
+            if (res.data.type === -1) {
                 this.setState({
-                    dianzanlist:false
+                    dianzanlist: false
                 });
-            }else{
+            } else {
                 this.setState({
-                    dianzanlist:true
+                    dianzanlist: true
                 });
             }
 
@@ -84,6 +89,13 @@ class AriticBody extends React.Component {
             }
 
         });
+    }
+
+    routerhandle (e) {
+        this.setState({
+            kk:this.state.kk++
+        });
+        this.props.history.push(`/wenzan/${e}`);
     }
 
     handlesubmit(e) {
@@ -137,7 +149,7 @@ class AriticBody extends React.Component {
                         </div>
                         <div className="commit-lists">
                             <ul>
-                                {this.state.wenzanpl.map(v => {
+                                {this.state.wenzanpl.reverse().map(v => {
                                     return (
                                         <li className="commit-pl-lists" style={{display: 'flex', padding: '10px 0'}}
                                             key={v.commitscontext + Math.random()}>
@@ -164,7 +176,23 @@ class AriticBody extends React.Component {
                             </ul>
                         </div>
                     </div>
-                    <div className="sk-body-right">B</div>
+                    <div className="sk-body-right">
+                        <div style={{height:240}}>
+                            <Carousels calcanlist={this.state.calcans} />
+                        </div>
+                        <div className="xgaritic">
+                            <div>相关文章</div>
+                            <div>
+                                <ul>
+                                    {this.state.xgdata.length>0 ? this.state.xgdata.map(v => {
+                                        return (
+                                            <li className="xgwz" onClick={()=>this.routerhandle(v._id)} key={v._id}><a style={{color:'#90979c'}}>{v.title}</a></li>
+                                        )
+                                    }):"没有相关文章咯哦"}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                     <BackTops/>
                 </div>
             </div>
