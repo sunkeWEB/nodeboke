@@ -19,7 +19,7 @@ class Headers extends React.Component {
             showRegisterModel: false,
             islogin: false,
             useravatar: '',
-            isselect:'/'  // 默认选择首页
+            isselect: '/'  // 默认选择首页
         }
     }
 
@@ -37,7 +37,7 @@ class Headers extends React.Component {
 
     handlerouter(e) {
         this.setState({
-            isselect:e
+            isselect: e
         });
         this.props.history.push(e);
     }
@@ -74,6 +74,7 @@ class Headers extends React.Component {
 
     logout() {
         browserCookies.erase('userids');
+        this.props.history.push('/');  // 用户登出之后 不能看到页面  退出到首页
         this.props.Logout();
     }
 
@@ -83,10 +84,6 @@ class Headers extends React.Component {
                 name: '首页',
                 path: '/'
             },
-            // {
-            //     name: '资源',
-            //     path: '/ziyuan'
-            // },
             {
                 name: '我们',
                 path: '/timexz'
@@ -95,7 +92,7 @@ class Headers extends React.Component {
         const menu = (
             <Menu>
                 <Menu.Item>
-                    <Icon type="setting"/> <span onClick={()=>this.props.history.push('/setting')}>设置</span>
+                    <Icon type="setting"/> <span onClick={() => this.props.history.push('/setting')}>设置</span>
                 </Menu.Item>
                 <Menu.Item>
                     <Icon type="logout"/> <span onClick={() => this.logout()}>登出</span>
@@ -110,7 +107,8 @@ class Headers extends React.Component {
                         {routers.map(v => {
                             return (
                                 <li key={v.name} onClick={() => this.handlerouter(v.path)}>
-                                    <a className={this.state.isselect===v.path ? 'seleceheader':''}  href="javascript:void(0)" style={{textDecoration: 'none',color:'#71777c'}}>
+                                    <a className={this.state.isselect === v.path ? 'seleceheader' : ''}
+                                       href="javascript:void(0)" style={{textDecoration: 'none', color: '#71777c'}}>
                                         {v.name}
                                     </a>
                                 </li>
@@ -139,7 +137,7 @@ class Headers extends React.Component {
                                 </li>
                             </div>) :
                             <Dropdown overlay={menu} placement="bottomRight">
-                                <img style={{width: 40, height: 40, borderRadius: '50%',marginRight:10}}
+                                <img style={{width: 40, height: 40, borderRadius: '50%', marginRight: 10}}
                                      src={'/' + this.props.avatar} alt=""/>
                             </Dropdown>}
                     </ul>

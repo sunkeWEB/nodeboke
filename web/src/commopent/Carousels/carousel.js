@@ -11,7 +11,7 @@ class Carousels extends React.Component {
                 <Carousel autoplay>
                     {this.props.calcanlist.map(v=>{
                         return (
-                            <img src={'/'+v.imgurl} alt=""/>
+                            <img key={v.imgurl} src={'/'+v.imgurl} alt=""/>
                         )
                     })}
                 </Carousel>

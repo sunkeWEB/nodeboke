@@ -6,7 +6,7 @@ import ComCommit from './../commit/commit';
 import './../../index.css';
 import Cookies from 'js-cookie';
 import {befoderDay} from './../../utili';
-import {withRouter} from 'react-router-dom';
+import {withRouter,Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
 import Carousels from './../../commopent/Carousels/carousel';
 @withRouter
@@ -21,10 +21,10 @@ class AriticBody extends React.Component {
             xgdata: [],
             dianzanlist: false,
             kk:1,
-            calcans:[]
+            calcans:[],
+            id: this.props.match.params.id
         };
     }
-
     componentWillMount() {
         let userid = Cookies.get('userids');
         let ids;
@@ -33,7 +33,7 @@ class AriticBody extends React.Component {
         } else {
             ids = userid.substr(3, userid.length - 4);
         }
-        const id = this.props.match.params.id;
+        const id = this.state.id;
         axios.get('/infoAritic3', {
             params: {
                 id
@@ -64,9 +64,7 @@ class AriticBody extends React.Component {
                 calcans:res.data.data
             });
         });
-
     }
-
     dianzan(e, key, index) {
         message.destroy();
         if (!this.props.isAuth) {
@@ -87,13 +85,13 @@ class AriticBody extends React.Component {
             if (res.data.code === 1) {
                 message.warn("点赞失败");
             }
-
         });
     }
 
     routerhandle (e) {
         this.setState({
-            kk:this.state.kk++
+            kk:this.state.kk++,
+            id:e
         });
         this.props.history.push(`/wenzan/${e}`);
     }
@@ -177,9 +175,9 @@ class AriticBody extends React.Component {
                         </div>
                     </div>
                     <div className="sk-body-right">
-                        <div style={{height:240}}>
+                        {this.state.calcans?<div style={{height:240}}>
                             <Carousels calcanlist={this.state.calcans} />
-                        </div>
+                        </div>:null}
                         <div className="xgaritic">
                             <div>相关文章</div>
                             <div>

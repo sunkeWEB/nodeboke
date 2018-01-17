@@ -163,6 +163,7 @@ router.post('/adduser', (req, res) => {
 
 router.post('/loginuser',(req,res)=>{
     const {name, pwd} = req.body;
+    let ip = req.ip.substr(7,req.ip.length);
     Yonghu.findOne({name,pwd:md5(pwd)},(err,doc)=>{
         if (err) {
             res.json({
@@ -171,20 +172,22 @@ router.post('/loginuser',(req,res)=>{
                 err_msg:err
             });
         }else {
-            if (doc) {
-                res.cookie('userids', doc._id);
-                res.json({
-                    code:0,
-                    msg:"success",
-                    data:doc
-                });
-            }else{
-                res.json({
-                    code:1,
-                    msg:'用户名密码或账号错误',
-                    data:doc
-                });
-            }
+            Yonghu.findByIdAndUpdate(doc._id,{lastip:ip,lasttime:new Date().getTime()},(err1,doc1)=>{
+                if (doc) {
+                    res.cookie('userids', doc._id);
+                    res.json({
+                        code:0,
+                        msg:"success",
+                        data:doc
+                    });
+                }else{
+                    res.json({
+                        code:1,
+                        msg:'用户名密码或账号错误',
+                        data:doc
+                    });
+                }
+            });
         }
     });
 });

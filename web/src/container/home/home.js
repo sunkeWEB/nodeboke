@@ -25,11 +25,12 @@ class Home extends React.Component {
                     menudata:res.data.data,
                     namenav:path
                 });
-                // console.log(res.data.data[0].name);
-                this.props.history.push(`/article/${res.data.data[0].name}`);
-                this.setState({
-                    namenav:res.data.data[0].name
-                });
+                if (path==='') {  // 如果用户是直接 通过 / 访问就 刷新到第一个
+                    this.props.history.push(`/article/${res.data.data[0].name}`);
+                    this.setState({
+                        namenav:res.data.data[0].name
+                    });
+                }
             }else {
                 message.warning("获取菜单失败");
             }

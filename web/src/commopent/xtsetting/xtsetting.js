@@ -34,7 +34,7 @@ class XtSetting extends React.Component {
             <div>
                 <div className="huisecolor">网站信息</div>
                 <div>
-                    {this.state.wznum > 0 ? <div>你是第 {this.state.wznum} 位采花贼</div> : null}
+                    {/*{this.state.wznum > 0 ? <div>你是第 {this.state.wznum} 位采花贼</div> : null}*/}
                     {<div>&copy;{this.state.year} {this.state.wzname}</div>}
                     {this.state.wzbeiannum ? <div>{this.state.wzbeiannum}</div> : null}
                     <div style={{marginTop: 10}}>

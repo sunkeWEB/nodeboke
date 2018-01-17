@@ -2,8 +2,10 @@ import React from 'react';
 import {Switch, Route, BrowserRouter, withRouter} from 'react-router-dom';
 import Profiles from './../../commopent/profile/profile';
 import UpdatePwd from './../../commopent/updatepwd/updatepwd';
+import {connect} from 'react-redux';
 
 @withRouter
+    @connect(state=>state.users,{})
 class Settings extends React.Component {
     constructor(props) {
         super(props);
@@ -12,9 +14,6 @@ class Settings extends React.Component {
         };
     }
 
-    componentWillMount() {
-        this.props.history.push('/setting/profile');
-    }
 
     render() {
         const settingsOption = [
@@ -24,7 +23,7 @@ class Settings extends React.Component {
         const path = this.props.location.pathname;
         return (
             <div className="sk-body" style={{maxWidth: 900}}>
-                <div className="setting-top sk-body-left">
+                {this.props.isAuth? <div className="setting-top sk-body-left">
                     <ul style={{
                         display: 'flex',
                         borderBottom: '1px solid rgba(178, 186, 194, 0.4)',
@@ -35,8 +34,8 @@ class Settings extends React.Component {
                                 onClick={() => this.props.history.push(v.key)}
                             >
                                 <a href="javascript:void(0)"
-                                   style={{textDecoration: 'none',color:'#ccc'}}
-                                   className={ path === v.key ? 'activess':'noactives'}
+                                   style={{textDecoration: 'none', color: '#ccc'}}
+                                   className={path === v.key ? 'activess' : 'noactives'}
                                 >
                                     {v.name}
                                 </a>
@@ -47,7 +46,7 @@ class Settings extends React.Component {
                         <Route path="/setting/profile" component={Profiles}/>
                         <Route path="/setting/updatepwd" component={UpdatePwd}/>
                     </Switch>
-                </div>
+                </div>:" 页面已经失效 请重新登录"}
             </div>
         )
     }
