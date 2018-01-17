@@ -122,7 +122,7 @@ router.get('/infoAritic2', (req, res) => {
 
     console.log(findtj);
 
-    Articles.find(findtj).sort({time: '-1'}).limit(10).exec((err, doc) => {
+    Articles.find(findtj).sort({time: '-1'}).exec((err, doc) => {
         if (err) {
             res.json({
                 code: 1,

@@ -10,10 +10,14 @@ class Settings extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            selectitem: ''
+            selectitem: '',
+            m:true
         };
     }
 
+    componentWillMount () {
+        this.props.history.push('/setting/profile');
+    }
 
     render() {
         const settingsOption = [

@@ -123,7 +123,7 @@ class AriticBody extends React.Component {
     render() {
         return (
             <div>
-                <div className="sk-body">
+                <div className="sk-body" onScroll={(e)=>console.log(e)}>
                     <div className="commitul" style={{position: 'fixed', top: '200px', marginLeft: -85}}>
                         <ul>
                             <li onClick={() => this.dianzan(this.props.match.params.id)}><a

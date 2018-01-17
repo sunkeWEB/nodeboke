@@ -5,14 +5,20 @@ import {withRouter} from 'react-router-dom';
 import Cookies from 'js-cookie';
 import axios from 'axios';
 import {connect} from 'react-redux';
+import LazyLoad, {forceCheck} from "react-lazyload"
+import VisibilitySensor from 'react-visibility-sensor';
+
 @withRouter
 @connect(state => state.users, {})
+
 class AriticList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             data: [],
+            num: 1
         };
+        this.scrollHandler = this.handleScroll.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -35,7 +41,22 @@ class AriticList extends React.Component {
         this.props.history.push(`/wenzan/${e}`);
     }
 
-    dianzan(e, key,index) {
+    componentDidMount() {
+        window.addEventListener('scroll', this.scrollHandler);
+    }
+
+    _handleScroll(scrollTop) {
+        console.log(scrollTop)
+        //滚动条距离页面的高度
+    }
+
+    handleScroll(event) {
+        let scrollTop = event.srcElement.body.scrollTop;
+        this._handleScroll(scrollTop);
+    }
+
+
+    dianzan(e, key, index) {
         message.destroy();
         if (!this.props.isAuth) {
             message.warning("只有登陆才能给赞噢");
@@ -43,22 +64,15 @@ class AriticList extends React.Component {
         }
         axios.post('/dianzan', {e}).then(res => {
 
-            // if (res.data.type === 0) {
-            //     this.refs[key].innerText = parseInt(this.refs[key].innerText) + 1;
-            // } else if (res.data.type === -1) {
-            //     this.refs[key].innerText = parseInt(this.refs[key].innerText) - 1;
-            // }
-
             if (res.data.code === 1) {
                 message.warn("点赞失败");
-            }else {
+            } else {
                 this.props.history.push(this.props.location.pathname);
             }
         });
     }
 
     render() {
-        // console.log(this.props);
         let userid = Cookies.get('userids');
         let id;
         if (userid === undefined) {
@@ -68,7 +82,7 @@ class AriticList extends React.Component {
         }
         return (
             <div>
-                {this.state.data.length > 0 ? <ul>
+                {this.state.data.length > 0 ? <ul ref="ss">
                     {this.state.data.map((v, index) => {
                         return (<li key={v.time} style={{
                             paddingTop: 10,
@@ -88,7 +102,7 @@ class AriticList extends React.Component {
                                             {v.title}
                                         </div>
                                         <div className="list-footer">
-                                            <Button onClick={() => this.dianzan(v._id, `dianzannum${index}`,index)}
+                                            <Button onClick={() => this.dianzan(v._id, `dianzannum${index}`, index)}
                                                     style={{padding: "0 3px", height: '22px'}}><Icon
                                                 className={v.dianzan.map(v =>
                                                     v.dianzanid === id ? "dianzan" : ""
@@ -100,7 +114,9 @@ class AriticList extends React.Component {
                                         </div>
                                     </div>
                                     <div className="ariticimg" style={{width: 60, height: 60}}>
-                                        <img src={"/" + v.fmimg} style={{width: 60, height: 60}} alt=""/>
+                                        <LazyLoad height={60}>
+                                            <img src={"/" + v.fmimg} style={{width: 60, height: 60}} alt=""/>
+                                        </LazyLoad>
                                     </div>
                                 </div>
                             </a>

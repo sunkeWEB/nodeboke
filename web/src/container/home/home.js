@@ -13,7 +13,7 @@ class Home extends React.Component {
         this.state = {
             menudata:[],
             namenav:''
-        }
+        };
     }
     componentWillMount() {
         let index = this.props.location.pathname.lastIndexOf('/');
