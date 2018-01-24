@@ -174,23 +174,23 @@ class AriticBody extends React.Component {
                             </ul>
                         </div>
                     </div>
-                    <div className="sk-body-right">
-                        {this.state.calcans?<div style={{height:240}}>
-                            <Carousels calcanlist={this.state.calcans} />
-                        </div>:null}
-                        <div className="xgaritic">
-                            <div>相关文章</div>
-                            <div>
-                                <ul>
-                                    {this.state.xgdata.length>0 ? this.state.xgdata.map(v => {
-                                        return (
-                                            <li className="xgwz" onClick={()=>this.routerhandle(v._id)} key={v._id}><a style={{color:'#90979c'}}>{v.title}</a></li>
-                                        )
-                                    }):"没有相关文章咯哦"}
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
+                    {/*<div className="sk-body-right">*/}
+                        {/*{this.state.calcans?<div style={{height:240}}>*/}
+                            {/*<Carousels calcanlist={this.state.calcans} />*/}
+                        {/*</div>:null}*/}
+                        {/*<div className="xgaritic">*/}
+                            {/*<div>相关文章</div>*/}
+                            {/*<div>*/}
+                                {/*<ul>*/}
+                                    {/*{this.state.xgdata.length>0 ? this.state.xgdata.map(v => {*/}
+                                        {/*return (*/}
+                                            {/*<li className="xgwz" onClick={()=>this.routerhandle(v._id)} key={v._id}><a style={{color:'#90979c'}}>{v.title}</a></li>*/}
+                                        {/*)*/}
+                                    {/*}):"没有相关文章咯哦"}*/}
+                                {/*</ul>*/}
+                            {/*</div>*/}
+                        {/*</div>*/}
+                    {/*</div>*/}
                     <BackTops/>
                 </div>
             </div>

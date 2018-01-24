@@ -83,21 +83,23 @@ class WzInfo extends React.Component {
                         <Input value={this.state.wzbeiannum} placeholder="请输入网站备案号" onChange={(e) => this.handleInput(e.target.value, 'wzbeiannum')}/>
                     </div>
                 </div>
-                <div className="uploadGroup marginBottom">
-                    <div style={{}}>
-                        <p>网站Logo</p>
-                        <UploadImg handleUploads={(e) => this.handleupload(e, 'logo')} showBtnUpdate={this.state.logo}/>
+                {this.state.weixin?<div>
+                    <div className="uploadGroup marginBottom">
+                        <div style={{}}>
+                            <p>网站Logo</p>
+                            <UploadImg handleUploads={(e) => this.handleupload(e, 'logo')} showBtnUpdate={this.state.logo}/>
+                        </div>
+                        <div style={{}}>
+                            <p>微信/群二维码</p>
+                            <UploadImg handleUploads={(e) => this.handleupload(e, 'weixin')}
+                                       showBtnUpdate={this.state.weixin}/>
+                        </div>
+                        <div style={{}}>
+                            <p>QQ/群二维码</p>
+                            <UploadImg handleUploads={(e) => this.handleupload(e, 'qq')} showBtnUpdate={this.state.qq}/>
+                        </div>
                     </div>
-                    <div style={{}}>
-                        <p>微信/群二维码</p>
-                        <UploadImg handleUploads={(e) => this.handleupload(e, 'weixin')}
-                                   showBtnUpdate={this.state.weixin}/>
-                    </div>
-                    <div style={{}}>
-                        <p>QQ/群二维码</p>
-                        <UploadImg handleUploads={(e) => this.handleupload(e, 'qq')} showBtnUpdate={this.state.qq}/>
-                    </div>
-                </div>
+                </div>:null}
                 <Button className="uploadGroup" onClick={() => this.submitServer()} type="primary">保存</Button>
             </div>
         );

@@ -10,15 +10,15 @@ class UploadImg extends React.Component {
         };
     }
 
-    componentWillReceiveProps () {  // 如果图片是修改
-        this.setState({
-            fileList: [{
-                uid: -1,
-                name: 'xxx.png',
-                status: 'done',
-                url: `http://localhost:9093/${this.props.showBtnUpdate}`,
-            }]
-        });
+    componentWillMount () {  // 如果图片是修改
+            this.setState({
+                fileList: [{
+                    uid: -1,
+                    name: 'xxx.png',
+                    status: 'done',
+                    url: `http://localhost:9093/${this.props.showBtnUpdate}`,
+                }]
+            });
     }
 
     handleChange({fileList}) {
@@ -26,14 +26,12 @@ class UploadImg extends React.Component {
         if (fileList.length >= 1 && fileList[0].response) {
             this.setState({calcanavatar: fileList[0].response.path});
             k = true;
-            // this.props.handleUploads(fileList[0].response.path);
         }
         this.props.handleUploads(fileList);
         this.setState({showUploadBtn: k, fileList})
     }
 
     render() {
-        // console.log(this.props);
         const uploadButton = (
             <div>
                 <Icon type="plus"/>

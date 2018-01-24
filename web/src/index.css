@@ -1,3 +1,4 @@
+
 .sk-header {
     height: 60px;
     background-color: white;
@@ -25,10 +26,10 @@
 }
 
 .sk-body-left {
-    overflow: hidden;
+    /*overflow: hidden;*/
     -webkit-box-flex: 1;
     flex-grow: 1;
-    max-width: 900px;
+    max-width: 960px;
     padding: 15px;
 }
 
@@ -194,4 +195,15 @@
 }
 .xgwz{
     padding:5px 10px;
+}
+
+.divappp{
+    top: 50px;
+    right: 0;
+    bottom: 50px;
+    left: 0;
+    overflow: scroll;
+    overflow-x: hidden;
+    border-left: 1px solid #eee;
+    border-right: 1px solid #eee;
 }

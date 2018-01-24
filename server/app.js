@@ -22,8 +22,17 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public/uploadimg')));
+app.use(express.static(path.join(__dirname, './../admin/build')));
 app.use('/', index);
 app.use('/users', users);
+
+app.use(function (req, res, next) {
+    if (req.url.startsWith('/user/') || req.url.startsWith('/static/')) {
+        return next();
+    }
+    return res.sendFile(path.resolve('./../admin/build/index.html'));
+
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -6,8 +6,7 @@ import Cookies from 'js-cookie';
 import axios from 'axios';
 import {connect} from 'react-redux';
 import LazyLoad, {forceCheck} from "react-lazyload"
-import VisibilitySensor from 'react-visibility-sensor';
-
+import BScroll from 'better-scroll';
 @withRouter
 @connect(state => state.users, {})
 
@@ -18,6 +17,7 @@ class AriticList extends React.Component {
             data: [],
             num: 1
         };
+        this.contentNode
         this.scrollHandler = this.handleScroll.bind(this);
     }
 
@@ -42,17 +42,26 @@ class AriticList extends React.Component {
     }
 
     componentDidMount() {
-        window.addEventListener('scroll', this.scrollHandler);
+        // let scroll = new BScroll('.warpper1');
+        console.log(this.contentNode);
+        if (this.contentNode) {
+            this.contentNode.addEventListener('scroll', this.scrollHandler.bind(this));
+        }
     }
 
-    _handleScroll(scrollTop) {
-        console.log(scrollTop)
-        //滚动条距离页面的高度
-    }
 
-    handleScroll(event) {
-        let scrollTop = event.srcElement.body.scrollTop;
-        this._handleScroll(scrollTop);
+    handleScroll(scroll) {
+        console.log(scroll);
+        // console.log(event);
+        // let scroll = event.path[1].scrollY;
+        // let outerHeight = event.path[1].outerHeight;
+        // let scrollTop = event.srcElement.body.scrollHeight;
+        // console.log();
+        // if (scroll + 50 === outerHeight) {
+        //     // alert("asa");
+        //     console.log("加载");
+        //     this._handleScroll(scrollTop);
+        // }
     }
 
 
@@ -81,8 +90,10 @@ class AriticList extends React.Component {
             id = userid.substr(3, userid.length - 4);
         }
         return (
-            <div>
-                {this.state.data.length > 0 ? <ul ref="ss">
+        //     overflow: scroll;
+        // overflow-x: hidden;
+            <div  className="warpper1" style={{height:900,overflow:'scroll',overflowX:'hidden'}} ref={ node => this.contentNode =node }>
+                {this.state.data.length > 0 ? <ul>
                     {this.state.data.map((v, index) => {
                         return (<li key={v.time} style={{
                             paddingTop: 10,

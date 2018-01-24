@@ -8,6 +8,7 @@ import reducers from "./reduxs";
 import Dashborad from './dashboard/dashboard';
 import Error from './commopent/error/error';
 import Auth from './auth';
+import Add from './add';
 
 const store = createStore(reducers, compose(
     applyMiddleware(thunk),
@@ -17,9 +18,10 @@ const store = createStore(reducers, compose(
 ReactDOM.render((
     <Provider store={store}>
         <BrowserRouter>
-            <div style={{height: "100%"}}>
+            <div>
                 <Auth/>
                 <Switch>
+                    <Route path='/add' component={Add}/>
                     <Route path='/' component={Dashborad}/>
                     <Route component={Error}/>
                 </Switch>
