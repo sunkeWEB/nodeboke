@@ -6,62 +6,93 @@ import Cookies from 'js-cookie';
 import axios from 'axios';
 import {connect} from 'react-redux';
 import LazyLoad, {forceCheck} from "react-lazyload"
-import BScroll from 'better-scroll';
+
+let date, newdate;
+
 @withRouter
 @connect(state => state.users, {})
-
 class AriticList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             data: [],
-            num: 1
+            num: 1,
+            oldnum: true
         };
-        this.contentNode
+        this.contentNode;
+        this.scroll;
         this.scrollHandler = this.handleScroll.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.selectmenu) {
-            axios.get('/infoAritic2', {
-                params: {
-                    dtype: nextProps.selectmenu
-                }
-            }).then(res => {
-                if (res.status === 200 && res.data.code === 0) {
-                    this.setState({
-                        data: res.data.data
-                    });
-                }
-            });
-        }
+        date = nextProps.selectmenu;
+        this.setState({
+            data: [],
+            num: 1,
+            oldnum: true
+        });
+        setTimeout(() => {
+            this.getDate();
+        }, 10);
     }
 
     handleclick(e) {
         this.props.history.push(`/wenzan/${e}`);
     }
 
+    getDate() {
+        // console.log(!this.state.oldnum);
+        if (!this.state.oldnum) {
+            return false;
+        }
+        axios.get('/infoAritic2', {
+            params: {
+                dtype: date,
+                num: this.state.num
+            }
+        }).then(res => {
+            if (res.status === 200 && res.data.code === 0) {
+                if (res.data.data.length < 10) {
+                    console.log("<10");
+                    this.setState({
+                        data: [...this.state.data, ...res.data.data],
+                        oldnum: false
+                    });
+                } else {
+                    console.log(">10");
+                    console.log([...this.state.data, ...res.data.data]);
+                    this.setState({
+                        data: [...this.state.data, ...res.data.data],
+                        num: this.state.num + 1
+                    });
+                }
+            }
+        });
+    }
+
+    removeScroll() {
+        console.log("数据已经加载完毕");
+    }
+
     componentDidMount() {
         // let scroll = new BScroll('.warpper1');
-        console.log(this.contentNode);
+        // console.log(this.contentNode);
         if (this.contentNode) {
-            this.contentNode.addEventListener('scroll', this.scrollHandler.bind(this));
+             this.contentNode.addEventListener('scroll', this.scrollHandler.bind(this));
         }
     }
 
 
-    handleScroll(scroll) {
-        console.log(scroll);
-        // console.log(event);
-        // let scroll = event.path[1].scrollY;
-        // let outerHeight = event.path[1].outerHeight;
-        // let scrollTop = event.srcElement.body.scrollHeight;
-        // console.log();
-        // if (scroll + 50 === outerHeight) {
-        //     // alert("asa");
-        //     console.log("加载");
-        //     this._handleScroll(scrollTop);
-        // }
+      handleScroll (event) {
+        const clientH = event.target.clientHeight;
+        const clientW = event.target.scrollHeight;
+        const scrollTop = event.target.scrollTop;
+        const isBotton = (clientH + scrollTop + 1 >= clientW);
+        if (isBotton) {
+            setTimeout(()=>{
+                this.getDate()
+            },10)
+        }
     }
 
 
@@ -90,12 +121,11 @@ class AriticList extends React.Component {
             id = userid.substr(3, userid.length - 4);
         }
         return (
-        //     overflow: scroll;
-        // overflow-x: hidden;
-            <div  className="warpper1" style={{height:900,overflow:'scroll',overflowX:'hidden'}} ref={ node => this.contentNode =node }>
+            <div className="warpper1" style={{height: 900, overflow: 'scroll', overflowX: 'hidden'}}
+                 ref={node => this.contentNode = node}>
                 {this.state.data.length > 0 ? <ul>
                     {this.state.data.map((v, index) => {
-                        return (<li key={v.time} style={{
+                        return (<li key={v.time + Math.random()} style={{
                             paddingTop: 10,
                             paddingBottom: 10,
                             borderBottom: '1px solid rgba(178, 186, 194, 0.4)'

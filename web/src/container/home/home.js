@@ -38,6 +38,7 @@ class Home extends React.Component {
     }
 
     handleclick (e) {
+        // console.log(e);
         this.setState({
             namenav:e
         });

@@ -24,7 +24,6 @@ class Headers extends React.Component {
     }
 
     componentWillMount() {
-        console.log("asa");
         axios.get('/getwzxx').then(res => {
             if (res.status === 200 && res.data.code === 0) {
                 const data = res.data.data[0];

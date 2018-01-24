@@ -110,7 +110,7 @@ router.get('/infoAritic', (req, res) => {
 // 手机api
 router.get('/infoAritic2', (req, res) => {
     let id = req.query.id;
-    const {dtype} = req.query;
+    const {dtype,num} = req.query;
     let findtj = {};
     if (id) {
         findtj['_id'] = id;
@@ -122,7 +122,7 @@ router.get('/infoAritic2', (req, res) => {
 
     console.log(findtj);
 
-    Articles.find(findtj).sort({time: '-1'}).exec((err, doc) => {
+    Articles.find(findtj).limit(10).skip( (parseInt(num)-1) * 10).exec((err, doc) => {
         if (err) {
             res.json({
                 code: 1,
