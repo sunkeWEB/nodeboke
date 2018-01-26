@@ -1,14 +1,16 @@
 import React from 'react';
 import axios from 'axios';
+import Logo from './logo.jpg';
 import {message, Icon, Button} from 'antd';
 import BackTops from './../backtop/backtop';
 import ComCommit from './../commit/commit';
 import './../../index.css';
 import Cookies from 'js-cookie';
 import {befoderDay} from './../../utili';
-import {withRouter,Redirect} from 'react-router-dom';
+import {withRouter, Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
 import Carousels from './../../commopent/Carousels/carousel';
+
 @withRouter
 @connect(state => state.users, {})
 class AriticBody extends React.Component {
@@ -20,12 +22,13 @@ class AriticBody extends React.Component {
             wenzanpl: [],
             xgdata: [],
             dianzanlist: false,
-            kk:1,
-            calcans:[],
+            kk: 1,
+            calcans: [],
             id: this.props.match.params.id
         };
     }
-    componentWillMount() {
+
+    componentDidMount() {
         let userid = Cookies.get('userids');
         let ids;
         if (userid === undefined) {
@@ -59,12 +62,13 @@ class AriticBody extends React.Component {
                 message.warning(res.data.msg);
             }
         });
-        axios.get('/getCalcan').then(res=>{
+        axios.get('/getCalcan').then(res => {
             this.setState({
-                calcans:res.data.data
+                calcans: res.data.data
             });
         });
     }
+
     dianzan(e, key, index) {
         message.destroy();
         if (!this.props.isAuth) {
@@ -88,10 +92,10 @@ class AriticBody extends React.Component {
         });
     }
 
-    routerhandle (e) {
+    routerhandle(e) {
         this.setState({
-            kk:this.state.kk++,
-            id:e
+            kk: this.state.kk++,
+            id: e
         });
         this.props.history.push(`/wenzan/${e}`);
     }
@@ -121,9 +125,10 @@ class AriticBody extends React.Component {
     }
 
     render() {
+        console.log(this.state.calcans);
         return (
             <div>
-                <div className="sk-body" onScroll={(e)=>console.log(e)}>
+                <div className="sk-body" onScroll={(e) => console.log(e)}>
                     <div className="commitul" style={{position: 'fixed', top: '200px', marginLeft: -85}}>
                         <ul>
                             <li onClick={() => this.dianzan(this.props.match.params.id)}><a
@@ -174,27 +179,30 @@ class AriticBody extends React.Component {
                             </ul>
                         </div>
                     </div>
-                    {/*<div className="sk-body-right">*/}
-                        {/*{this.state.calcans?<div style={{height:240}}>*/}
-                            {/*<Carousels calcanlist={this.state.calcans} />*/}
-                        {/*</div>:null}*/}
-                        {/*<div className="xgaritic">*/}
-                            {/*<div>相关文章</div>*/}
-                            {/*<div>*/}
-                                {/*<ul>*/}
-                                    {/*{this.state.xgdata.length>0 ? this.state.xgdata.map(v => {*/}
-                                        {/*return (*/}
-                                            {/*<li className="xgwz" onClick={()=>this.routerhandle(v._id)} key={v._id}><a style={{color:'#90979c'}}>{v.title}</a></li>*/}
-                                        {/*)*/}
-                                    {/*}):"没有相关文章咯哦"}*/}
-                                {/*</ul>*/}
-                            {/*</div>*/}
-                        {/*</div>*/}
-                    {/*</div>*/}
+                    <div className="sk-body-right">
+                        {this.state.calcans ? <div style={{height: 240}}>
+                            <Carousels calcanlist={this.state.calcans} style={{height: 240}}/>
+                        </div> : null}
+                        <div className="xgaritic">
+                            <div>相关文章</div>
+                            <div>
+                                <ul>
+                                    {this.state.xgdata.length > 0 ? this.state.xgdata.map(v => {
+                                        return (
+                                            <li className="xgwz" key={v._id}><a href={`/wenzan/${v._id}`}
+                                                                                target="_blank"
+                                                                                style={{color: '#90979c'}}>{v.title}</a>
+                                            </li>
+                                        )
+                                    }) : "没有相关文章咯哦"}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                     <BackTops/>
                 </div>
             </div>
-        )
+        );
     }
 }
 

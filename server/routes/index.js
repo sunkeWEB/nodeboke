@@ -12,11 +12,11 @@ const Wzxx = require('./../model/db').Wzxx;
 const Post = require('./../model/db').Post;
 
 router.get('/css', (req, res) => {
-    let post = new Post({name:'sunke1'});
-    post.save((err,doc)=>{
+    let post = new Post({name: 'sunke1'});
+    post.save((err, doc) => {
         res.json({
-            code:0,
-            data:doc
+            code: 0,
+            data: doc
         });
     });
 });
@@ -110,7 +110,7 @@ router.get('/infoAritic', (req, res) => {
 // 手机api
 router.get('/infoAritic2', (req, res) => {
     let id = req.query.id;
-    const {dtype,num} = req.query;
+    const {dtype, num, tuij} = req.query;
     let findtj = {};
     if (id) {
         findtj['_id'] = id;
@@ -122,7 +122,7 @@ router.get('/infoAritic2', (req, res) => {
 
     console.log(findtj);
 
-    Articles.find(findtj).limit(10).skip( (parseInt(num)-1) * 10).exec((err, doc) => {
+    Articles.find(findtj).limit(10).skip((parseInt(num) - 1) * 10).exec((err, doc) => {
         if (err) {
             res.json({
                 code: 1,
@@ -138,6 +138,7 @@ router.get('/infoAritic2', (req, res) => {
         }
     })
 });
+
 
 // 删除
 router.post('/delArtics', (req, res) => {
@@ -383,8 +384,13 @@ router.post('/deldtype', (req, res) => {
 
 // 博主推荐
 router.get('/tjlist', (req, res) => {
-    const {dtype} = req.query;
-    Articles.find({dtype, sort: true}, (err, doc) => {
+    const {dtype, all} = req.query;
+    let k = {};
+    k['sort'] = true;
+    if (!all) {   // 当用户登录的时候  获取推荐 其他按照类型获取
+        k['dtype'] = dtype;
+    }
+    Articles.find(k, (err, doc) => {
         if (err) {
             res.json({
                 code: 1,
@@ -461,7 +467,7 @@ router.get('/infoAritic3', (req, res) => {
     if (id) {
         findtj['_id'] = id;
     }
-    Articles.findOne(findtj, {__v: 0,commits:0}, (err, doc) => {
+    Articles.findOne(findtj, {__v: 0, commits: 0}, (err, doc) => {
         if (err) {
             res.json({
                 code: 1,
@@ -476,12 +482,12 @@ router.get('/infoAritic3', (req, res) => {
                         msg: 'error',
                         data: err1
                     });
-                }else{
+                } else {
                     res.json({
                         code: 0,
                         msg: 'success',
                         data: doc,
-                        xgdata:doc1
+                        xgdata: doc1
                     });
                 }
             });
@@ -500,14 +506,14 @@ router.post('/pjrk', (req, res) => {
                 commitscontext: e
             }
         }
-    },(err,doc)=>{
+    }, (err, doc) => {
         if (err) {
             res.json({
-                code:1,
-                msg:'失败',
-                err_msg:err
+                code: 1,
+                msg: '失败',
+                err_msg: err
             });
-        }else{
+        } else {
             res.json({
                 code: 0,
                 msg: "添加成功",
@@ -520,51 +526,53 @@ router.post('/pjrk', (req, res) => {
 // 用来读取评论的
 router.get('/getariticpj', (req, res) => {
     const {id} = req.query;
-    Articles.findOne({_id:id}).populate({path:'commits.commitsid',select:'-_id -__v -pwd'}).exec((err,doc)=>{
+    Articles.findOne({_id: id}).populate({path: 'commits.commitsid', select: '-_id -__v -pwd'}).exec((err, doc) => {
         res.json({
-            code:0,
-            data:doc.commits
+            code: 0,
+            data: doc.commits
         });
     })
 });
 
 router.get('/cs', (req, res) => {
-  Articles.find({_id:'5a597f89464b020e48e2b316'}).populate({path:'commitname',select:'name'}).exec((err,doc)=>{
-      res.json({
-          data:doc
-      });
-  })
+    Articles.find({_id: '5a597f89464b020e48e2b316'}).populate({path: 'commitname', select: 'name'}).exec((err, doc) => {
+        res.json({
+            data: doc
+        });
+    })
 });
 
 // dianzan
 
-router.post('/dianzan',(req,res)=>{
+router.post('/dianzan', (req, res) => {
     const {userids} = req.cookies;
     const {e} = req.body;
-    Articles.find({$and: [{'dianzan.dianzanid': userids},{_id:e}]},(err,doc)=>{
-        if (doc.length===0) {  // 没有 就添加
-            Articles.update({_id:e},{$addToSet: {
+    Articles.find({$and: [{'dianzan.dianzanid': userids}, {_id: e}]}, (err, doc) => {
+        if (doc.length === 0) {  // 没有 就添加
+            Articles.update({_id: e}, {
+                $addToSet: {
                     dianzan: {
                         dianzanid: userids
                     }
-                }},(err,doc)=>{
+                }
+            }, (err, doc) => {
                 if (err) {
                     res.json({
-                        code:1,
-                        msg:'失败',
-                        err_msg:err
+                        code: 1,
+                        msg: '失败',
+                        err_msg: err
                     });
-                }else{
+                } else {
                     res.json({
                         code: 0,
-                        type:0,
+                        type: 0,
                         msg: "点赞成功",
                         data: doc
                     });
                 }
             })
-        }else {  // 取消
-            Articles.update({_id:e}, {$pull: {dianzan: {dianzanid: userids}}}, (err1, doc1) => {
+        } else {  // 取消
+            Articles.update({_id: e}, {$pull: {dianzan: {dianzanid: userids}}}, (err1, doc1) => {
                 if (err1) {
                     return res.json({
                         code: 1,
@@ -574,7 +582,7 @@ router.post('/dianzan',(req,res)=>{
                 } else {
                     return res.json({
                         code: 0,
-                        type:-1,
+                        type: -1,
                         msg: "取消成功",
                         data: doc1
                     });
@@ -585,19 +593,19 @@ router.post('/dianzan',(req,res)=>{
 });
 
 // 获取时间轴
-router.get('/gettimexz',(req,res)=>{
-    Timexzs.find({},{_id:0,__v:0},(err,doc)=>{
+router.get('/gettimexz', (req, res) => {
+    Timexzs.find({}, {_id: 0, __v: 0}, (err, doc) => {
         if (err) {
             res.json({
-                code:1,
-                msg:'系统获取失败',
-                err_msg:err
+                code: 1,
+                msg: '系统获取失败',
+                err_msg: err
             });
-        }else {
+        } else {
             res.json({
-                code:0,
-                msg:'success',
-                data:doc
+                code: 0,
+                msg: 'success',
+                data: doc
             });
         }
     });

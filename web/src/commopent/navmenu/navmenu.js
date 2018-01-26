@@ -8,7 +8,7 @@ class Navmenu extends React.Component {
         this.state = {
             data: [],
             selectli: true,
-            selectnav:'/'
+            selectnav: '/'
         };
     }
 
@@ -17,7 +17,7 @@ class Navmenu extends React.Component {
         this.props.history.push(`/article/${e}`);
     }
 
-    componentWillMount () {
+    componentWillMount() {
 
     }
 
@@ -31,10 +31,15 @@ class Navmenu extends React.Component {
                 <div style={{width: 100}}>文章列表</div>
                 <div style={{flex: 1, textAlign: 'right'}}>
                     <ul style={{display: 'flex'}} className="navitemsul">
+                        <li><a href="javascript:void(0)"
+                               style={{textDecoration: 'none',}}>推荐</a>
+                        </li>
                         {this.props.menudatas.map(v => (
                             <li className={active === v.name ? 'activenav' : null} key={v.js} style={{marginRight: 20}}
                                 onClick={(e) => this.handleRoute(v.name, e)}>
-                                <a  href="javascript:void(0)" className={active === v.name ? 'activenavcolor' : 'noactivenavcolor'} style={{textDecoration:'none',}}>{v.name}</a>
+                                <a href="javascript:void(0)"
+                                   className={active === v.name ? 'activenavcolor' : 'noactivenavcolor'}
+                                   style={{textDecoration: 'none',}}>{v.name}</a>
                             </li>
                         ))}
                     </ul>

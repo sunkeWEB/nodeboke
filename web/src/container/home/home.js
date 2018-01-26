@@ -11,44 +11,57 @@ class Home extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            menudata:[],
-            namenav:''
+            menudata: [{name: 'all', js: '推荐'}], // 存放文章导航栏
+            namenav: '' // 当前选中的导航栏
         };
     }
-    componentWillMount() {
+
+    componentDidMount() {
         let index = this.props.location.pathname.lastIndexOf('/');
         let url = this.props.location.pathname;
-        let path = url.substr(index+1,url.length);  // 这里的三步是当页面刷新的时候
+        let path = url.substr(index + 1, url.length);  // 这里的三步是当页面刷新的时候
+
         axios.get('/getDtype').then(res => {
-            if (res.data.code===0 && res.status===200) {
+            if (res.data.code === 0 && res.status === 200) {
                 this.setState({
-                    menudata:res.data.data,
-                    namenav:path
+                    menudata: [...this.state.menudata, ...res.data.data],
+                    namenav: path === '' ? 'all' : path
                 });
-                if (path==='') {  // 如果用户是直接 通过 / 访问就 刷新到第一个
-                    this.props.history.push(`/article/${res.data.data[0].name}`);
-                    this.setState({
-                        namenav:res.data.data[0].name
-                    });
-                }
-            }else {
+            } else {
                 message.warning("获取菜单失败");
             }
         });
     }
 
-    handleclick (e) {
-        // console.log(e);
+    handleRoute (key) {
         this.setState({
-            namenav:e
+            namenav:key
         });
-        this.props.history.push(`/article/${e}`);
+        if (key==='all') {
+            this.props.history.push(`/`);
+        }else{
+            this.props.history.push(`/aritic/${key}`);
+        }
     }
+
+
     render() {
         return (
             <div className="sk-body">
                 <div className="sk-body-left">
-                    <Navmenu handleClick={(e)=>this.handleclick(e)} selectmenu={this.state.namenav}  menudatas={this.state.menudata} />
+                    <div style={{display: 'flex', borderBottom: '1px solid rgba(178,186,194,.4)'}}>
+                        <div style={{width: 100}}>文章列表</div>
+                        <div style={{flex: 1, textAlign: 'right'}}>
+                            <ul style={{display: 'flex'}} className="navitemsul">
+                                {this.state.menudata.map(v => (
+                                    <li className={this.state.namenav === v.name ? 'activenav' : null} key={v.js} style={{marginRight: 20}}
+                                        onClick={() => this.state.namenav === v.name ? null : this.handleRoute(v.name)}>
+                                        <a  href="javascript:void(0)" className={this.state.namenav === v.name ? 'activenavcolor' : 'noactivenavcolor'} style={{textDecoration:'none',}}>{v.name==='all'?'推荐':v.name}</a>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
                     <AriticList selectmenu={this.state.namenav ? this.state.namenav:null} />
                 </div>
                 <div className="sk-body-right">

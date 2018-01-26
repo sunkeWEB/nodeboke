@@ -35,6 +35,9 @@ class ComCommit extends React.Component {
             return false;
         }
         this.props.commitcontext(this.state.value);
+        this.setState({
+            value:''
+        });
     }
 
 

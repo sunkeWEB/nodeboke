@@ -6,9 +6,7 @@ import Cookies from 'js-cookie';
 import axios from 'axios';
 import {connect} from 'react-redux';
 import LazyLoad, {forceCheck} from "react-lazyload"
-
-let date, newdate;
-
+import Loading from './../load/Load';
 @withRouter
 @connect(state => state.users, {})
 class AriticList extends React.Component {
@@ -17,57 +15,112 @@ class AriticList extends React.Component {
         this.state = {
             data: [],
             num: 1,
-            oldnum: true
+            oldnum: true,
+            load: true,
+            nodata: false,
+            flage: false,
+            oldactive: ''
         };
-        this.contentNode;
         this.scroll;
-        this.scrollHandler = this.handleScroll.bind(this);
+        this.active
+        this.handleScroll = this.handleScroll.bind(this);
     }
 
-    componentWillReceiveProps(nextProps) {
-        date = nextProps.selectmenu;
+    // componentDidMount() {
+    //     console.log("componentWillMount");
+    //     const path = this.props.location.pathname;
+    //     let dtype, alls;
+    //     // if (path === '/') {
+    //     //     alls = '/';
+    //     //     axios.get('/tjlist', {params: {all: alls, dtype: dtype}}).then(res => {
+    //     //         if (res.data.data.length > 0) {
+    //     //             this.setState({
+    //     //                 data: res.data.data,
+    //     //                 nodata: true
+    //     //             });
+    //     //         }
+    //     //         setTimeout(() => {
+    //     //             if (this.state.data.length === 0) {
+    //     //                 this.setState({
+    //     //                     nodata: true
+    //     //                 });
+    //     //             }
+    //     //         }, 800)
+    //     //     })
+    //     // } else {
+    //     //     dtype = path.substr(9);
+    //     //     axios.get('/infoAritic2', {
+    //     //         params: {
+    //     //             dtype: dtype,
+    //     //             num: this.state.num
+    //     //         }
+    //     //     }).then(res => {
+    //     //         if (res.status === 200 && res.data.code === 0) {
+    //     //             if (res.data.data.length < 10) {
+    //     //                 this.setState({
+    //     //                     data: [...this.state.data, ...res.data.data],
+    //     //                     oldnum: false,
+    //     //                     nodata: true
+    //     //                 });
+    //     //             } else {
+    //     //                 this.setState({
+    //     //                     nodata: true,
+    //     //                     data: [...this.state.data, ...res.data.data],
+    //     //                     num: this.state.num + 1
+    //     //                 });
+    //     //             }
+    //     //         }
+    //     //     });
+    //     // }
+    //     this.setState({
+    //         flage: true
+    //     });
+    // }
+
+    async componentWillReceiveProps(nextProps, nextState) {
+        if (this.state.oldactive !== nextProps.selectmenu) {
+            await this.set();
+        }
+        this.active = nextProps.selectmenu;
         this.setState({
-            data: [],
-            num: 1,
-            oldnum: true
+            oldactive: this.active
         });
-        setTimeout(() => {
+        if (this.active === 'all') {   // 进入推荐页面
+            axios.get('/tjlist', {params: {all: 'all'}}).then(res => {
+                if (res.data.data.length > 0) {
+                    this.setState({
+                        data: res.data.data,
+                        nodata: true
+                    });
+                }
+                if (this.state.data.length === 0) {
+                    this.setState({
+                        nodata: true
+                    });
+                }
+            })
+        } else {
             this.getDate();
-        }, 10);
+        }
+    }
+
+    set() {
+        return new Promise((resolve, reject) => {
+            this.setState({
+                data: [],
+                num: 1,
+                oldnum: true,
+                load: true,
+                nodata: false,
+                flage: true,
+                oldactive: ''
+            });
+            resolve();
+        })
     }
 
     handleclick(e) {
         this.props.history.push(`/wenzan/${e}`);
-    }
-
-    getDate() {
-        // console.log(!this.state.oldnum);
-        if (!this.state.oldnum) {
-            return false;
-        }
-        axios.get('/infoAritic2', {
-            params: {
-                dtype: date,
-                num: this.state.num
-            }
-        }).then(res => {
-            if (res.status === 200 && res.data.code === 0) {
-                if (res.data.data.length < 10) {
-                    console.log("<10");
-                    this.setState({
-                        data: [...this.state.data, ...res.data.data],
-                        oldnum: false
-                    });
-                } else {
-                    console.log(">10");
-                    console.log([...this.state.data, ...res.data.data]);
-                    this.setState({
-                        data: [...this.state.data, ...res.data.data],
-                        num: this.state.num + 1
-                    });
-                }
-            }
-        });
     }
 
     removeScroll() {
@@ -75,23 +128,45 @@ class AriticList extends React.Component {
     }
 
     componentDidMount() {
-        // let scroll = new BScroll('.warpper1');
-        // console.log(this.contentNode);
         if (this.contentNode) {
-             this.contentNode.addEventListener('scroll', this.scrollHandler.bind(this));
+            this.contentNode.addEventListener('scroll', this.handleScroll);
         }
     }
 
-
-      handleScroll (event) {
-        const clientH = event.target.clientHeight;
-        const clientW = event.target.scrollHeight;
+    handleScroll(event) {
+        const clientHeight = event.target.clientHeight;
+        const scrollHeight = event.target.scrollHeight;
         const scrollTop = event.target.scrollTop;
-        const isBotton = (clientH + scrollTop + 1 >= clientW);
-        if (isBotton) {
-            setTimeout(()=>{
-                this.getDate()
-            },10)
+        if ((clientHeight + scrollTop).toFixed(0) * 1 === scrollHeight && this.state.flage) {
+            this.getDate(this.active);
+        }
+    }
+
+    getDate() {
+        if (this.active) {
+            axios.get('/infoAritic2', {
+                params: {
+                    dtype: this.active,
+                    num: this.state.num
+                }
+            }).then(res => {
+                if (res.status === 200 && res.data.code === 0) {
+                    if (res.data.data.length < 10) {
+                        this.setState({
+                            data: [...this.state.data, ...res.data.data],
+                            oldnum: false,
+                            nodata: true,
+                            flage: false
+                        });
+                    } else {
+                        this.setState({
+                            data: [...this.state.data, ...res.data.data],
+                            num: this.state.num + 1,
+                            nodata: true
+                        });
+                    }
+                }
+            });
         }
     }
 
@@ -103,7 +178,6 @@ class AriticList extends React.Component {
             return false;
         }
         axios.post('/dianzan', {e}).then(res => {
-
             if (res.data.code === 1) {
                 message.warn("点赞失败");
             } else {
@@ -117,53 +191,55 @@ class AriticList extends React.Component {
         let id;
         if (userid === undefined) {
             id = '';
-        } else {
+        }
+        else {
             id = userid.substr(3, userid.length - 4);
         }
         return (
-            <div className="warpper1" style={{height: 900, overflow: 'scroll', overflowX: 'hidden'}}
+            <div className="warpper1" style={{height: 700, overflow: 'auto', overflowX: 'hidden'}}
                  ref={node => this.contentNode = node}>
-                {this.state.data.length > 0 ? <ul>
-                    {this.state.data.map((v, index) => {
-                        return (<li key={v.time + Math.random()} style={{
-                            paddingTop: 10,
-                            paddingBottom: 10,
-                            borderBottom: '1px solid rgba(178, 186, 194, 0.4)'
-                        }}
-                        >
-                            <a href="javascript:void(0)" style={{color: "#2e3135"}}>
-                                <div style={{display: 'flex', alignItems: "center"}}>
-                                    <div style={{flex: 1}}>
-                                        <div className="header">
-                                            <span>{v.author}</span>
-                                            <span>{befoderDay(v.time)}</span>
-                                            <span>{v.dtype}</span>
-                                        </div>
-                                        <div onClick={() => this.handleclick(v._id)} className="list-body">
-                                            {v.title}
-                                        </div>
-                                        <div className="list-footer">
-                                            <Button onClick={() => this.dianzan(v._id, `dianzannum${index}`, index)}
-                                                    style={{padding: "0 3px", height: '22px'}}><Icon
-                                                className={v.dianzan.map(v =>
-                                                    v.dianzanid === id ? "dianzan" : ""
-                                                )}
-                                                type="heart"/><span ref={`dianzannum${index}`}>{v.dianzan.length}</span></Button>
+                {this.state.nodata ? this.state.data.length > 0 ? <ul>
+                        {this.state.data.map((v, index) => {
+                            return (<li key={v.time + Math.random()} style={{
+                                paddingTop: 10,
+                                paddingBottom: 10,
+                                borderBottom: '1px solid rgba(178, 186, 194, 0.4)'
+                            }}
+                            >
+                                <a target="_blank" href="javascript:void(0)" style={{color: "#2e3135"}}>
+                                    <div style={{display: 'flex', alignItems: "center"}}>
+                                        <div style={{flex: 1}}>
+                                            <div className="header">
+                                                <span>{v.author}</span>
+                                                <span>{befoderDay(v.time)}</span>
+                                                <span>{v.dtype}</span>
+                                            </div>
+                                            <div onClick={() => this.handleclick(v._id)} className="list-body">
+                                                {v.title}
+                                            </div>
+                                            <div className="list-footer">
+                                                <Button onClick={() => this.dianzan(v._id, `dianzannum${index}`, index)}
+                                                        style={{padding: "0 3px", height: '22px'}}><Icon
+                                                    className={v.dianzan.map(v =>
+                                                        v.dianzanid === id ? "dianzan" : ""
+                                                    )}
+                                                    type="heart"/><span ref={`dianzannum${index}`}>{v.dianzan.length}</span></Button>
 
-                                            <Button style={{padding: "0 3px", height: '22px', marginLeft: 5}}><Icon
-                                                type="message"/><span>{v.commits.length}</span></Button>
+                                                <Button style={{padding: "0 3px", height: '22px', marginLeft: 5}}><Icon
+                                                    type="message"/><span>{v.commits.length}</span></Button>
+                                            </div>
+                                        </div>
+                                        <div className="ariticimg" style={{width: 60, height: 60}}>
+                                            <LazyLoad height={60}>
+                                                <img src={"/" + v.fmimg} style={{width: 60, height: 60}} alt=""/>
+                                            </LazyLoad>
                                         </div>
                                     </div>
-                                    <div className="ariticimg" style={{width: 60, height: 60}}>
-                                        <LazyLoad height={60}>
-                                            <img src={"/" + v.fmimg} style={{width: 60, height: 60}} alt=""/>
-                                        </LazyLoad>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>)
-                    })}
-                </ul> : <div style={{paddingTop: 15, fontSize: 18, textAlign: 'center'}}><p>暂无相关文章</p></div>}
+                                </a>
+                            </li>)
+                        })}
+                    </ul> : <div style={{paddingTop: 15, fontSize: 18, textAlign: 'center'}}><p>暂无相关文章</p></div> :
+                    <Loading load={this.state.load}/>}
             </div>
         )
     }

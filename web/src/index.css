@@ -1,3 +1,13 @@
+::-webkit-scrollbar {
+    width: 0px;
+    height: 1px;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0.2);
+}
 
 .sk-header {
     height: 60px;
@@ -69,17 +79,19 @@
     min-width: 240px;
     margin-left: 20px;
 }
+
 #commit-body {
     background-color: #f8f9fa;
     border-radius: 4px;
     padding: 20px
 }
+
 @media (max-width: 960px) {
     .sk-body-right {
         display: none;
     }
 
-    #savebtn{
+    #savebtn {
         width: 100%;
     }
 
@@ -94,11 +106,11 @@
     #commit-body {
         padding: 5px;
     }
+
     .commit-body-avatar img {
         margin-left: 0 !important;
     }
 }
-
 
 @media (min-width: 961px) {
     .sk-body {
@@ -169,35 +181,42 @@
 }
 
 .commit-pl-lists:not(:last-child) {
-    border-bottom:1px solid #f5f5f5;
+    border-bottom: 1px solid #f5f5f5;
 }
 
-.commitsttime:before{
+.commitsttime:before {
     content: "  ";
 }
-.noactivenavcolor{
+
+.noactivenavcolor {
     color: #b2bac2 !important;
 }
-.dianzan{
+
+.dianzan {
     color: #00B7FF !important;
 }
+
 .nodianzan {
     color: #ccc !important;
 }
-.activess{
+
+.activess {
     color: #00B7FF !important;
-}
-.seleceheader{
-    color: #00B7FF !important;
-}
-.xgwz:not(:last-child){
-    border-bottom:1px solid #ccc;
-}
-.xgwz{
-    padding:5px 10px;
 }
 
-.divappp{
+.seleceheader {
+    color: #00B7FF !important;
+}
+
+.xgwz:not(:last-child) {
+    border-bottom: 1px solid #ccc;
+}
+
+.xgwz {
+    padding: 5px 10px;
+}
+
+.divappp {
     top: 50px;
     right: 0;
     bottom: 50px;
