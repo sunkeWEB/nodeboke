@@ -7,6 +7,7 @@ import axios from 'axios';
 import {connect} from 'react-redux';
 import LazyLoad, {forceCheck} from "react-lazyload"
 import Loading from './../load/Load';
+import QueueAnim from 'rc-queue-anim';
 @withRouter
 @connect(state => state.users, {})
 class AriticList extends React.Component {
@@ -195,10 +196,13 @@ class AriticList extends React.Component {
         else {
             id = userid.substr(3, userid.length - 4);
         }
+        const heights = {
+            height:700
+        };
         return (
-            <div className="warpper1" style={{height: 700, overflow: 'auto', overflowX: 'hidden'}}
+            <div className="warpper1" style={this.state.data.length>=10?heights:null}
                  ref={node => this.contentNode = node}>
-                {this.state.nodata ? this.state.data.length > 0 ? <ul>
+                {this.state.nodata ? this.state.data.length > 0 ? <QueueAnim ><ul key={"asa"}>
                         {this.state.data.map((v, index) => {
                             return (<li key={v.time + Math.random()} style={{
                                 paddingTop: 10,
@@ -218,7 +222,7 @@ class AriticList extends React.Component {
                                                 {v.title}
                                             </div>
                                             <div className="list-footer">
-                                                <Button onClick={() => this.dianzan(v._id, `dianzannum${index}`, index)}
+                                                <Button
                                                         style={{padding: "0 3px", height: '22px'}}><Icon
                                                     className={v.dianzan.map(v =>
                                                         v.dianzanid === id ? "dianzan" : ""
@@ -238,7 +242,7 @@ class AriticList extends React.Component {
                                 </a>
                             </li>)
                         })}
-                    </ul> : <div style={{paddingTop: 15, fontSize: 18, textAlign: 'center'}}><p>暂无相关文章</p></div> :
+                    </ul></QueueAnim> : <div style={{paddingTop: 15, fontSize: 18, textAlign: 'center'}}><p>暂无相关文章</p></div> :
                     <Loading load={this.state.load}/>}
             </div>
         )

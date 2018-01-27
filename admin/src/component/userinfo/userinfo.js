@@ -104,9 +104,6 @@ class Userinfo extends React.Component {
         );
         return (
             <div>
-                <Button onClick={() => this.props.history.go(-1)}>
-                    <Icon type="left"/>Back
-                </Button>
                 <Form onSubmit={this.handleSubmit}>
                     <FormItem
                         label="姓名"

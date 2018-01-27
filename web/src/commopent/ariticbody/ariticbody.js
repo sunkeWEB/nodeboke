@@ -144,9 +144,18 @@ class AriticBody extends React.Component {
                         </div>
                         <div className="aouth">
                         </div>
-                        <h1 className="wenzantitle" style={{fontSize: '2rem'}}>{this.state.wenzantitle}</h1>
+                        <h1 className="wenzantitle" style={{fontSize: '1.8rem',textAlign:'center'}}>{this.state.wenzantitle}</h1>
                         <div id="Link-Props" className="wenzanbody"
                              dangerouslySetInnerHTML={{__html: this.state.wenzanbody}}/>
+                        <div className="mshow">
+                        <ul style={{display:'flex'}}>
+                            {this.state.dianzanlist ? '谢谢你的赞 我会继续前行的' : '给个赞呗'}
+                            <li style={{textAlign:'right',marginLeft:10}} onClick={() => this.dianzan(this.props.match.params.id)}><a
+                                style={{color: '#ccc'}}><Icon type="heart" style={{fontSize: '1.2rem', color: '#ccc'}}
+                                                              className={this.state.dianzanlist ? 'dianzan' : 'nodianzan'}
+                            /></a></li>
+                        </ul>
+                        </div>
                         <div className="commit-div">
                             {this.state.wenzanbody ? <ComCommit commitcontext={(e) => this.handlesubmit(e)}/> : null}
                         </div>

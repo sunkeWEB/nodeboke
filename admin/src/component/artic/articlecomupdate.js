@@ -112,21 +112,11 @@ class Demo extends React.Component {
         };
         const modules = {
             toolbar: [
-                // [{ 'font': [] }],
-                [{'header': [1, 2, false]}],
-                ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-                [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
-                // [{ 'align': [] }],
-                // [{ 'color': [] }, { 'background': [] }],
-                ['link', 'image'],
-                ['clean']
+                [{'font': []}, {'header': [1, 2, false]}, {'list': 'ordered'}, {'align': []}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}, 'bold', 'italic', 'underline', 'strike', 'blockquote', 'code', {'color': []}, {'background': []}, 'link', 'image', 'clean'],
             ],
         };
         const formats = [
-            'header',
-            'bold', 'italic', 'underline', 'strike', 'blockquote',
-            'list', 'bullet', 'indent',
-            'link', 'image'
+            'font', 'header', 'bold', 'italic', 'underline', 'strike', 'blockquote', 'list', 'bullet', 'indent', 'align', 'color', 'background', 'link', 'image', 'code', 'clean'
         ];
         const uploadButton = (
             <div>

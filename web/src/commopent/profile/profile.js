@@ -60,7 +60,7 @@ class Profiles extends React.Component {
                 <div style={{display: 'flex', alignItems: 'center'}}>
                     <div style={{width: 100}}>昵称</div>
                     <div style={{flex: 1, marginBottom: 15}}>
-                        <Input value={this.state.name} onChange={(e) => this.setState({name: e.target.value})}
+                        <Input disabled={'disabled'} value={this.state.name} onChange={(e) => this.setState({name: e.target.value})}
                                placeholder="填写你的昵称" style={{width: '100%'}}/>
                     </div>
                 </div>

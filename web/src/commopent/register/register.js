@@ -9,13 +9,19 @@ class Register extends React.Component {
             phone: '',
             pwd: '',
             emailphone: '',
+            name:'',
             loading: false
         };
     }
 
     handleOk() {
+        const arr = ['root', 'admin'];
         const data = this.state;
         message.destroy();
+        if (arr.includes(data.name)) {
+            message.warning("用户名不能被注册");
+            return false;
+        }
         if (data.name === '') {
             message.warning("用户名不能为空");
             return false;
@@ -25,7 +31,14 @@ class Register extends React.Component {
         }else if (data.pwd=== '') {
             message.warning("密码不能为空");
             return false;
+        }else if (data.pwd.length<=6) {
+            message.warning("密码长度不能少于6位");
+            return false;
+        }else if (data.name.length<=2) {
+            message.warning("用户名长度不能少于2位");
+            return false;
         }
+
         this.setState({
             loading: true
         });

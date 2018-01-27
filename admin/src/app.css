@@ -94,3 +94,6 @@ th,td{
     overflow: hidden;
     clear: both;
 }
+.ql-color-picker svg,.ql-icon-picker svg{
+    padding-bottom: 7px !important;
+}

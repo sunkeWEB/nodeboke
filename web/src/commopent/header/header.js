@@ -136,8 +136,10 @@ class Headers extends React.Component {
                                 </li>
                             </div>) :
                             <Dropdown overlay={menu} placement="bottomRight">
-                                <img style={{width: 40, height: 40, borderRadius: '50%', marginRight: 10}}
-                                     src={'/' + this.props.avatar} alt=""/>
+                                <div style={{padding:'0px 10px'}}>
+                                    <img style={{width: 40, height: 40, borderRadius: '50%', marginRight: 10}}
+                                         src={'/' + this.props.avatar} alt=""/>
+                                </div>
                             </Dropdown>}
                     </ul>
                     <div>

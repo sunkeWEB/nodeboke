@@ -5,7 +5,7 @@ import {
 import axios from 'axios';
 import Selects from './../select/select';
 import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import 'react-quill/dist/quill.bubble.css';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -73,7 +73,6 @@ class Demo extends React.Component {
     }
 
     handleBody(e) {
-        console.log(e);
         this.setState({
             body: e
         });
@@ -87,21 +86,11 @@ class Demo extends React.Component {
         };
         const modules = {
             toolbar: [
-                // [{ 'font': [] }],
-                [{'header': [1, 2, false]}],
-                ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-                [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
-                // [{ 'align': [] }],
-                // [{ 'color': [] }, { 'background': [] }],
-                ['link', 'image'],
-                ['clean']
+                [{'font': []}, {'header': [1, 2, false]}, {'list': 'ordered'}, {'align': []}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}, 'bold', 'italic', 'underline', 'strike', 'blockquote', 'code', {'color': []}, {'background': []}, 'link', 'image', 'clean'],
             ],
         };
         const formats = [
-            'header',
-            'bold', 'italic', 'underline', 'strike', 'blockquote',
-            'list', 'bullet', 'indent',
-            'link', 'image'
+            'font', 'header', 'bold', 'italic', 'underline', 'strike', 'blockquote', 'list', 'bullet', 'indent', 'align', 'color', 'background', 'link', 'image', 'code', 'clean'
         ];
         return (
             <div>
@@ -120,11 +109,11 @@ class Demo extends React.Component {
                         label="类型"
                         hasFeedback
                     >
-                        <Selects handlesubmit={(e)=>this.handleSubmit('dtype', e)} />
+                        <Selects handlesubmit={(e) => this.handleSubmit('dtype', e)}/>
                     </FormItem>
                     <FormItem
                         {...formItemLayout}
-                        label="是否置顶"
+                        label="是否推荐"
                     >
                         {getFieldDecorator('switch', {valuePropName: 'checked'})(
                             <Switch onChange={(e) => this.handleSubmit('sort', e)}/>

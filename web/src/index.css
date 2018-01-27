@@ -85,7 +85,16 @@
     border-radius: 4px;
     padding: 20px
 }
-
+.mshow {
+    display: none;
+    padding-top: 0.5rem;
+    border-top: 1px solid rgba(178, 186, 194, 0.4);
+    width: 100%;
+    font-size: 0.8rem;
+}
+.mshow ul {
+    margin-bottom: 0.5rem !important;
+}
 @media (max-width: 960px) {
     .sk-body-right {
         display: none;
@@ -109,6 +118,9 @@
 
     .commit-body-avatar img {
         margin-left: 0 !important;
+    }
+    .mshow {
+        display: inline-block;
     }
 }
 
@@ -225,4 +237,9 @@
     overflow-x: hidden;
     border-left: 1px solid #eee;
     border-right: 1px solid #eee;
+}
+.warpper1{
+    height: auto;
+    overflow: auto;
+    overflow-x: hidden
 }

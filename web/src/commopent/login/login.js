@@ -103,9 +103,9 @@ class Login extends React.Component {
                                 <span>没有账号 ?</span> <a href="javascript:void(0)"
                                                        onClick={() => this.props.openOtherModal('showRegisterModel')}>注册</a>
                             </div>
-                            <div style={{flex: 1, textAlign: 'right'}}>
-                                <a href="javascript:void(0)">忘记密码</a>
-                            </div>
+                            {/*<div style={{flex: 1, textAlign: 'right'}}>*/}
+                                {/*<a href="javascript:void(0)">忘记密码</a>*/}
+                            {/*</div>*/}
                         </div>
                     </Modal>
                 </div>) : null}
